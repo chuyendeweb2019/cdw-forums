@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "T_VERIFICATION_TOKEN")
+@Table(name = "t_verification_token")
 public class VerificationToken {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -12,13 +12,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 // QUOC DAO 
-@Table(name = "T_EDUCATIONPOST")
+@Entity
+@Table(name = "t_educationpost")
 public class EducationPost {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	private String firsttitle;
 	private String title;
 	
 	private String body;
