@@ -1,17 +1,23 @@
 package vn.cdw.cdwforums.entity;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_category")
-public class Category {
+public class Category implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -23,6 +29,10 @@ public class Category {
 	private String userName;
 	@Column(name = "date_created")
 	private Date dateCreate;
+	
+	@OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL,mappedBy="userId")
+//	@JoinColumn(name = "id", referencedColumnName ="categary_id" )
+	private List<Post> post;
 	
 	
 	public Category(int id, int weight, String name, String displayName, String userName, Date dateCreate) {

@@ -1,19 +1,25 @@
 package vn.cdw.cdwforums.entity;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_post")
-public class Post {
+public class Post implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -22,23 +28,28 @@ public class Post {
 	@Column(name = "date_created")
 	private Date dateCreated;
 
-	@OneToOne
-	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User userId;
 
-	@OneToOne
-	@JoinColumn(name = "category_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id", referencedColumnName="id")
 	private Category categoryId;
-	@Column(name = "comment_count")
-	private int commentCount;
+	
+	@OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL,mappedBy="postId")
+//	@JoinColumn(name = "comment_count")
+	private List<Comment> comment;
+//	@JoinColumn(name = "comment_count")
+	
+	
 	@Column(name = "hit_count")
 	private int hitCount;
 
 	public Post() {
 	}
 
-	public Post(int id, String title, String body, Date dateCreated, User userId, Category categoryId, int commentCount,
-			int hitCount) {
+	public Post(int id, String title, String body, Date dateCreated, User userId, Category categoryId,
+			List<Comment> comment, int hitCount) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -46,7 +57,7 @@ public class Post {
 		this.dateCreated = dateCreated;
 		this.userId = userId;
 		this.categoryId = categoryId;
-		this.commentCount = commentCount;
+		this.comment = comment;
 		this.hitCount = hitCount;
 	}
 
@@ -98,12 +109,12 @@ public class Post {
 		this.categoryId = categoryId;
 	}
 
-	public int getCommentCount() {
-		return commentCount;
+	public List<Comment> getComment() {
+		return comment;
 	}
 
-	public void setCommentCount(int commentCount) {
-		this.commentCount = commentCount;
+	public void setComment_count(List<Comment> comment) {
+		this.comment = comment;
 	}
 
 	public int getHitCount() {
@@ -113,5 +124,7 @@ public class Post {
 	public void setHitCount(int hitCount) {
 		this.hitCount = hitCount;
 	}
+
+	
 	
 }
