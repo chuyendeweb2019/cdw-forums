@@ -1,205 +1,42 @@
 <!DOCTYPE html>
-<html lang="vi-vn" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
-	<div th:fragment="header">
-		<div class="search-bar">
-			<div class="search-icon">
-				<i class="material-icons">search</i>
-			</div>
-			<input type="text" placeholder="TÌM KIẾM ...">
-			<div class="close-search">
-				<i class="material-icons">close</i>
-			</div>
-		</div>
-		<!-- #END# Search Bar -->
-		<!-- Top Bar -->
-		<nav class="navbar">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a href="javascript:void(0);" class="navbar-toggle collapsed"
-						data-toggle="collapse" data-target="#navbar-collapse"
-						aria-expanded="false"></a> <a href="javascript:void(0);"
-						class="bars"></a> <a class="navbar-brand" href="/.">Diễn đàn chia sẻ kiến thức IT</a>
-				</div>
-				<div class="collapse navbar-collapse" id="navbar-collapse">
-					<ul class="nav navbar-nav navbar-right">
-						<!-- Call Search -->
-						<li><a href="javascript:void(0);" class="js-search"
-							data-close="true"><i class="material-icons">search</i></a></li>
-						<!-- #END# Call Search -->
-						<!-- Notifications -->
-						<li class="dropdown"><a href="javascript:void(0);"
-							class="dropdown-toggle" data-toggle="dropdown" role="button">
-								<i class="material-icons">notifications</i> <span
-								class="label-count">7</span>
-						</a>
-							<ul class="dropdown-menu">
-								<li class="header">NOTIFICATIONS</li>
-								<li class="body">
-									<ul class="menu">
-										<li><a href="javascript:void(0);">
-												<div class="icon-circle bg-light-green">
-													<i class="material-icons">person_add</i>
-												</div>
-												<div class="menu-info">
-													<h4>12 new members joined</h4>
-													<p>
-														<i class="material-icons">access_time</i> 14 mins ago
-													</p>
-												</div>
-										</a></li>
-										<li><a href="javascript:void(0);">
-												<div class="icon-circle bg-cyan">
-													<i class="material-icons">add_shopping_cart</i>
-												</div>
-												<div class="menu-info">
-													<h4>4 sales made</h4>
-													<p>
-														<i class="material-icons">access_time</i> 22 mins ago
-													</p>
-												</div>
-										</a></li>
-										<li><a href="javascript:void(0);">
-												<div class="icon-circle bg-red">
-													<i class="material-icons">delete_forever</i>
-												</div>
-												<div class="menu-info">
-													<h4>
-														<b>Nancy Doe</b> deleted account
-													</h4>
-													<p>
-														<i class="material-icons">access_time</i> 3 hours ago
-													</p>
-												</div>
-										</a></li>
-										<li><a href="javascript:void(0);">
-												<div class="icon-circle bg-orange">
-													<i class="material-icons">mode_edit</i>
-												</div>
-												<div class="menu-info">
-													<h4>
-														<b>Nancy</b> changed name
-													</h4>
-													<p>
-														<i class="material-icons">access_time</i> 2 hours ago
-													</p>
-												</div>
-										</a></li>
-										<li><a href="javascript:void(0);">
-												<div class="icon-circle bg-blue-grey">
-													<i class="material-icons">comment</i>
-												</div>
-												<div class="menu-info">
-													<h4>
-														<b>John</b> commented your post
-													</h4>
-													<p>
-														<i class="material-icons">access_time</i> 4 hours ago
-													</p>
-												</div>
-										</a></li>
-										<li><a href="javascript:void(0);">
-												<div class="icon-circle bg-light-green">
-													<i class="material-icons">cached</i>
-												</div>
-												<div class="menu-info">
-													<h4>
-														<b>John</b> updated status
-													</h4>
-													<p>
-														<i class="material-icons">access_time</i> 3 hours ago
-													</p>
-												</div>
-										</a></li>
-										<li><a href="javascript:void(0);">
-												<div class="icon-circle bg-purple">
-													<i class="material-icons">settings</i>
-												</div>
-												<div class="menu-info">
-													<h4>Settings updated</h4>
-													<p>
-														<i class="material-icons">access_time</i> Yesterday
-													</p>
-												</div>
-										</a></li>
-									</ul>
-								</li>
-								<li class="footer"><a href="javascript:void(0);">View
-										All Notifications</a></li>
-							</ul></li>
-						<!-- #END# Notifications -->
+<header th:fragment="header"
+        class="navbar navbar-expand navbar-white bg-white flex-column flex-md-row border-bottom box-shadow">
+    <a th:href="@{/}" href="#" th:text="#{header.siteName}" class="navbar-brand text-dark my-0 mr-md-auto">My Forum</a>
 
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a th:href="@{/}" th:text="#{header.menu.home}" class="p-2 text-dark" href="#">home</a>
+        <a th:href="@{http://ofitserov.pro/report/}" th:target="_blank" th:text="#{header.menu.report}"
+           class="p-2 text-dark" href="#">report</a>
+        <a sec:authorize="${hasRole('ADMIN')}" th:href="@{/admin/users}" th:text="#{header.menu.users}"
+           class="p-2 text-dark" href="#">users</a>
+        <a sec:authorize="${hasRole('ADMIN')}" th:href="@{/admin/sections}" th:text="#{header.menu.sections}"
+           class="p-2 text-dark" href="#">sections</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/search}" th:text="#{header.menu.search}"
+           class="p-2 text-dark" href="#">search</a>
+    </nav>
 
+    <div sec:authorize="isAuthenticated()" th:remove="tag">
+        <span  class="mx-1">You are logged as:</span>
+        
+        <!-- dang bi loi cho nay` ne` -->
+        <p>a</p>
+        
+        <form th:action="@{/logout}"
+              method="post">
+            <button type="submit" th:text="#{header.logout}" class="btn btn-outline-secondary">Logout</button>
+        </form>
+    </div>
 
-						<!-- Tasks -->
-						<li class="dropdown"><a href="javascript:void(0);"
-							class="dropdown-toggle" data-toggle="dropdown" role="button">
-								<i class="material-icons">flag</i> <span class="label-count">9</span>
-						</a>
-							<ul class="dropdown-menu">
-								<li class="header">TASKS</li>
-								<li class="body">
-									<ul class="menu tasks">
-										<li><a href="javascript:void(0);">
-												<h4>
-													Footer display issue <small>32%</small>
-												</h4>
-												<div class="progress">
-													<div class="progress-bar bg-pink" role="progressbar"
-														aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"
-														style="width: 32%"></div>
-												</div>
-										</a></li>
-										<li><a href="javascript:void(0);">
-												<h4>
-													Make new buttons <small>45%</small>
-												</h4>
-												<div class="progress">
-													<div class="progress-bar bg-cyan" role="progressbar"
-														aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"
-														style="width: 45%"></div>
-												</div>
-										</a></li>
-										<li><a href="javascript:void(0);">
-												<h4>
-													Create new dashboard <small>54%</small>
-												</h4>
-												<div class="progress">
-													<div class="progress-bar bg-teal" role="progressbar"
-														aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"
-														style="width: 54%"></div>
-												</div>
-										</a></li>
-										<li><a href="javascript:void(0);">
-												<h4>
-													Solve transition issue <small>65%</small>
-												</h4>
-												<div class="progress">
-													<div class="progress-bar bg-orange" role="progressbar"
-														aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"
-														style="width: 65%"></div>
-												</div>
-										</a></li>
-										<li><a href="javascript:void(0);">
-												<h4>
-													Answer GitHub questions <small>92%</small>
-												</h4>
-												<div class="progress">
-													<div class="progress-bar bg-purple" role="progressbar"
-														aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"
-														style="width: 92%"></div>
-												</div>
-										</a></li>
-									</ul>
-								</li>
-								<li class="footer"><a href="javascript:void(0);">View
-										All Tasks</a></li>
-							</ul></li>
-						<!-- #END# Tasks -->
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</div>
+    <div sec:authorize="isAnonymous()" th:remove="tag">
+    	<p>b</p>
+        <a th:href="@{/login}" th:text="#{header.signIn}" class="mx-1 btn btn-outline-secondary">Sign In</a>
+        <a th:href="@{/registration}" th:text="#{header.signUp}" class="mx-1 btn btn-outline-primary">Sign Up</a>
+    
+    </div>
+
+</header>
 </body>
 </html>

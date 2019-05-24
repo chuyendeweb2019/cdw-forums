@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:include="layouts/default :: page">
+<body>
+<div th:fragment="content">
+    <div class="page-header">
+        <h1 th:text="#{home.welcome}"></h1>
+    </div>
+    <h2 th:text="#{section.home}"></h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th class="w-75"><span th:text="#{section.title}">th</span></th>
+            <th><span th:text="#{section.topics}">th</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="section : ${sections}">
+            <td><a th:href="@{/section/{id}/(id=${section.id})}" th:text="${section.title}">-</a>
+                <div th:text="${section.text}" class="forum-desc">forum-desc</div>
+                <div th:if="${section.isParent}" class="forum-subforums">
+                    <span th:text="#{section.subsection}"></span>
+                    <ul class="m-0">
+                        <li th:each="subsection : ${section.subsections}">
+                            <a th:href="@{/section/{id}/(id=${subsection.id})}" th:text="${subsection.title}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+            <td th:text="${section.topics.size()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

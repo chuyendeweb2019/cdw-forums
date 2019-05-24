@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:include="layouts/default :: page">
+<body>
+<div th:fragment="content">
+    <div class="page-header">
+        <h1 th:text="#{errors.heading}">Error</h1>
+    </div>
+    <div class="jumbotron">
+        <h2>Lỗi hệ thống!</h2>
+        <p class="lead">Rất tiếc, đã xảy ra lỗi. :(</p>
+        <p class="lead">Vui lòng, liên hệ quản trị để hỗ trợ.</p>
+        <a href="/" th:text="#{btn.goToIndexPage}" class="btn btn-lg btn-primary">Trở về trang chủ</a>
+    </div>
+</div>
+</body>
+</html>

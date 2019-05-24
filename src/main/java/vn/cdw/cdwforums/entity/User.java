@@ -1,9 +1,8 @@
 package vn.cdw.cdwforums.entity;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,99 +13,125 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import vn.cdw.cdwforums.util.ForumConstants;
 
 @Entity
-@Table(name = "t_user")
-public class User implements Serializable {
+public class User implements UserDetails {
+	
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userId")
-	private List<Post> posts;
+    @NotEmpty
+    @Size(min = ForumConstants.USERNAME_LENGTH_MIN, max = ForumConstants.USERNAME_LENGTH_MAX)
+    @Column(unique = true)
+    private String username;
 
-	public List<Post> getPost() {
-		return posts;
+    @NotEmpty
+    @Column(unique = true)
+    @Email
+    private String email;
+
+    @NotEmpty
+    private String password;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateOfRegistration;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Reply> replies;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Topic> topics;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Photo photo;
+
+    public boolean getPhotoExist() {
+        return Objects.nonNull(photo);
+    }
+
+    public int getCountPosts() {
+        return (topics.size() + replies.size());
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "ROLE_ASSIGNMENTS",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
+    private Set<Role> roles;
+
+    public boolean getHasRoleById(Long roleId) {
+        for (Role role : roles) {
+            if (role.getId().equals(roleId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return password;
 	}
 
-	public void setPost(List<Post> posts) {
-		this.posts = posts;
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return username;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userId")
-
-	private List<EducationPost> educationPost;
-
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userId")
-
-	private List<Comment> comment;
-
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userId")
-
-	private List<VerificationToken> verificationToken;
-
-	@Column(name = "username")
-	private String userName;
-	@Column(name = "password")
-	private String passWord;
-	private String email;
-	private int activated;
-	@Column(name = "date_created")
-	private Date dateCreated;
-	@Column(name = "avatar_location")
-	private String avatarLocation;
-	private String bio;
-
-	@ManyToMany
-	private Set<Role> roles;
-
-	public User() {
-	}
-
-	public User(int id, List<Post> posts, List<EducationPost> educationPost, List<Comment> comment,
-			List<VerificationToken> verificationToken, String userName, String passWord, String email, int activated,
-			Date dateCreated, String avatarLocation, String bio, Set<Role> roles) {
-		super();
-		this.id = id;
-		this.posts = posts;
-		this.educationPost = educationPost;
-		this.comment = comment;
-		this.verificationToken = verificationToken;
-		this.userName = userName;
-		this.passWord = passWord;
-		this.email = email;
-		this.activated = activated;
-		this.dateCreated = dateCreated;
-		this.avatarLocation = avatarLocation;
-		this.bio = bio;
-		this.roles = roles;
-	}
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPassWord() {
-		return passWord;
-	}
-
-	public void setPassWord(String passWord) {
-		this.passWord = passWord;
 	}
 
 	public String getEmail() {
@@ -117,68 +142,36 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public int getActivated() {
-		return activated;
+	public Date getDateOfRegistration() {
+		return dateOfRegistration;
 	}
 
-	public void setActivated(int activated) {
-		this.activated = activated;
+	public void setDateOfRegistration(Date dateOfRegistration) {
+		this.dateOfRegistration = dateOfRegistration;
 	}
 
-	public Date getDateCreated() {
-		return dateCreated;
+	public Set<Reply> getReplies() {
+		return replies;
 	}
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
+	public void setReplies(Set<Reply> replies) {
+		this.replies = replies;
 	}
 
-	public String getAvatarLocation() {
-		return avatarLocation;
+	public Set<Topic> getTopics() {
+		return topics;
 	}
 
-	public void setAvatarLocation(String avatarLocation) {
-		this.avatarLocation = avatarLocation;
+	public void setTopics(Set<Topic> topics) {
+		this.topics = topics;
 	}
 
-	public String getBio() {
-		return bio;
+	public Photo getPhoto() {
+		return photo;
 	}
 
-	public void setBio(String bio) {
-		this.bio = bio;
-	}
-
-	public List<Post> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
-	}
-
-	public List<EducationPost> getEducationPost() {
-		return educationPost;
-	}
-
-	public void setEducationPost(List<EducationPost> educationPost) {
-		this.educationPost = educationPost;
-	}
-
-	public List<Comment> getComment() {
-		return comment;
-	}
-
-	public void setComment(List<Comment> comment) {
-		this.comment = comment;
-	}
-
-	public List<VerificationToken> getVerificationToken() {
-		return verificationToken;
-	}
-
-	public void setVerificationToken(List<VerificationToken> verificationToken) {
-		this.verificationToken = verificationToken;
+	public void setPhoto(Photo photo) {
+		this.photo = photo;
 	}
 
 	public Set<Role> getRoles() {
@@ -189,4 +182,17 @@ public class User implements Serializable {
 		this.roles = roles;
 	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public User() {
+		super();
+	}
+	
+	
 }
