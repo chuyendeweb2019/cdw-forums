@@ -15,41 +15,38 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    
+
     @Autowired
-	public WebSecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-		super();
-		this.userDetailsService = userDetailsService;
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-	}
-    
+    public WebSecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userDetailsService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    	// TODO Auto-generated method stub
-    	auth
-        .userDetailsService(userDetailsService)
-        .passwordEncoder(bCryptPasswordEncoder);
+    	 auth
+         .userDetailsService(userDetailsService)
+         .passwordEncoder(bCryptPasswordEncoder);
     }
-    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	http.authorizeRequests()
-        .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-        .and()
-        .formLogin()
-        .loginPage("/login")
-        .defaultSuccessUrl("/", false)
-        .and()
-        .rememberMe()
-        .key("rem-me-key")
-        .rememberMeParameter("remember-me")
-        .rememberMeCookieName("forum-remember-me")
-        .tokenValiditySeconds(86400)
-        .and()
-        .logout()
-        .logoutSuccessUrl("/");
+
+        http.authorizeRequests()
+                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/", false)
+                .and()
+                .rememberMe()
+                .key("rem-me-key")
+                .rememberMeParameter("remember-me")
+                .rememberMeCookieName("forum-remember-me")
+                .tokenValiditySeconds(86400)
+                .and()
+                .logout()
+                .logoutSuccessUrl("/");
     }
-    
 }

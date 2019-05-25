@@ -20,13 +20,13 @@
                 <div class="form-group">
                     <label th:text="#{search.select.label.searchIn}" for="searchIn">searchIn</label>
                     <select name="search_in" id="searchIn" class="form-control">
-                        <option th:value="${T(pro.ofitserov.forumtest1.util.ForumConstants).SEARCH_IN_SECTIONS}"
+                        <option th:value="${T(vn.cdw.cdwforums.util.ForumConstants).SEARCH_IN_SECTIONS}"
                                 th:text="#{search.select.sections}">sections
                         </option>
-                        <option th:value="${T(pro.ofitserov.forumtest1.util.ForumConstants).SEARCH_IN_TOPICS}"
+                        <option th:value="${T(vn.cdw.cdwforums.util.ForumConstants).SEARCH_IN_TOPICS}"
                                 th:text="#{search.select.topics}">topics
                         </option>
-                        <option th:value="${T(pro.ofitserov.forumtest1.util.ForumConstants).SEARCH_IN_REPLIES}"
+                        <option th:value="${T(vn.cdw.cdwforums.util.ForumConstants).SEARCH_IN_REPLIES}"
                                 th:text="#{search.select.replies}">replies
                         </option>
                     </select>

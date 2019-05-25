@@ -14,7 +14,7 @@
                     <span th:text="#{profile.label.photo}">photo</span>
                 </td>
                 <td class="w-65">
-                    <img th:src="${user.photoExist} ? ('/photo?id=' + ${user.photo.id}) : ${T(pro.ofitserov.forumtest1.util.ForumConstants).PHOTO_DEFAULT}"
+                    <img th:src="${user.photoExist} ? ('/photo?id=' + ${user.photo.id}) : ${T(vn.cdw.cdwforums.util.ForumConstants).PHOTO_DEFAULT}"
                          src="" class="img-thumbnail user-photo" alt=""/><br/>
                 </td>
             </tr>

@@ -1,10 +1,11 @@
 package vn.cdw.cdwforums.service;
 
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,29 +22,32 @@ import vn.cdw.cdwforums.reponsitory.UserRepository;
 @Service
 public class UserService implements UserDetailsService {
 
-    private static final long ID_ROLE_FOR_NEW_USER = 2;
+    private static final long ID_ROLE_FOR_NEW_USER = 1L;
 
-	private UserRepository userRepository;
+    private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
-    
-    
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username);
+
+    @Autowired
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
         if (Objects.isNull(user)) {
-            throw new UsernameNotFoundException("Không tìm thấy tài khoản : " + username);
+            throw new UsernameNotFoundException("Can't find user with username " + username);
         }
         return user;
-	}
-	
-	public void signupUser(User user) {
-		
+    }
+
+    public void signupUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Optional<Role> oUserRole = roleRepository.findById(ID_ROLE_FOR_NEW_USER);
-        Role userRole = oUserRole.get();
+        Role userRole = roleRepository.findById(ID_ROLE_FOR_NEW_USER).orElse(new Role());
         user.setRoles(Collections.singleton(userRole));
-        
         userRepository.save(user);
     }
 
@@ -81,7 +85,8 @@ public class UserService implements UserDetailsService {
         return null;
     }
 
-    public boolean hasRole(String role) {
+    @SuppressWarnings("unchecked")
+	public boolean hasRole(String role) {
         Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
@@ -94,5 +99,4 @@ public class UserService implements UserDetailsService {
         }
         return hasRole;
     }
-
 }

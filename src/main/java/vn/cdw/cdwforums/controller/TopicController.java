@@ -3,7 +3,6 @@ package vn.cdw.cdwforums.controller;
 
 import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -55,7 +54,7 @@ public class TopicController {
         if (Objects.isNull(sectionId) || !sectionRepository.existsById(sectionId)) {
             throw new ResourceNotFoundException();
         } else {
-            model.addAttribute("section", sectionRepository.findById(sectionId));
+            model.addAttribute("section", sectionRepository.findById(sectionId).orElse(new Section()));
         }
 
         model.addAttribute("title", "Add topic");
@@ -68,14 +67,12 @@ public class TopicController {
     public String add(@Valid Topic topic, BindingResult result, ModelMap model, @RequestParam("section_id") Long sectionId) {
         model.addAttribute("title", "Update topic");
 
-        Optional<Section> oSection;
         Section section;
 
         if (Objects.isNull(sectionId) || !sectionRepository.existsById(sectionId)) {
             throw new ResourceNotFoundException();
         } else {
-            oSection = sectionRepository.findById(sectionId);
-            section = oSection.get();
+            section = sectionRepository.findById(sectionId).orElse(new Section());
             model.addAttribute("section", section);
         }
 
@@ -88,8 +85,7 @@ public class TopicController {
             topic.setDateOfPublication(new Date());
             topic.setSection(section);
         } else {
-            Optional<Topic> oEditTopic = topicRepository.findById(topic.getId());
-            Topic editTopic = oEditTopic.get();
+            Topic editTopic = topicRepository.findById(topic.getId()).orElse(new Topic());
 
             if (!(userService.isCurrentUserId(editTopic.getUser().getId()) || userService.hasRole("ROLE_MODERATOR"))) {
                 throw new AccessDeniedException("This user can't edit this topic");
@@ -110,8 +106,7 @@ public class TopicController {
 
     @GetMapping("/{id}")
     public String view(@PathVariable Long id, ModelMap model, @PageableDefault(sort = {"dateOfPublication"}, value = ForumConstants.PAGE_DEFAULT_SIZE, direction = Sort.Direction.ASC) Pageable pageable) {
-        Optional<Topic> oTopic = topicRepository.findById(id);
-        Topic topic = oTopic.get();
+        Topic topic = topicRepository.findById(id).orElse(new Topic());
 
         if (topic == null) {
             throw new ResourceNotFoundException();
@@ -129,8 +124,7 @@ public class TopicController {
     @PreAuthorize(value = "hasRole('USER') or hasRole('MODERATOR')")
     public String edit(@PathVariable Long id, ModelMap model) {
 
-        Optional<Topic> oTopic = topicRepository.findById(id);
-        Topic topic = oTopic.get();
+        Topic topic = topicRepository.findById(id).orElse(new Topic());
 
         if (Objects.isNull(topic)) {
             throw new ResourceNotFoundException();
@@ -151,8 +145,7 @@ public class TopicController {
     public String confirmRemoval(@PathVariable Long id, ModelMap model) {
         model.addAttribute("title", "Delete topic");
 
-        Optional<Topic> oTopic = topicRepository.findById(id);
-        Topic topic = oTopic.get();
+        Topic topic = topicRepository.findById(id).orElse(new Topic());
 
         if (Objects.isNull(topic)) {
             throw new ResourceNotFoundException();
@@ -166,8 +159,7 @@ public class TopicController {
     @PostMapping("/{id}/delete")
     public String remove(@PathVariable Long id) {
 
-    	Optional<Topic> oTopic = topicRepository.findById(id);
-        Topic topic = oTopic.get();
+        Topic topic = topicRepository.findById(id).orElse(new Topic());
 
         if (Objects.isNull(topic)) {
             throw new ResourceNotFoundException();

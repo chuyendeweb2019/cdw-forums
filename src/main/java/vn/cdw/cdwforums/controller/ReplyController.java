@@ -48,13 +48,13 @@ public class ReplyController {
         Topic topic;
         Reply replyTo;
 
-        if (Objects.isNull(topicId) || Objects.isNull(topic = (topicRepository.findById(topicId).get() ))) {
+        if (Objects.isNull(topicId) || Objects.isNull(topic = topicRepository.findById(topicId).orElse(new Topic()))) {
             throw new ResourceNotFoundException();
         } else {
             model.addAttribute("topic", topic);
         }
 
-        if (Objects.nonNull(replyId) && Objects.nonNull(replyTo = replyRepository.findById(replyId).get())) {
+        if (Objects.nonNull(replyId) && Objects.nonNull(replyTo = replyRepository.findById(replyId).orElse(new Reply()))) {
             model.addAttribute("replyTo", replyTo);
         }
 
@@ -70,15 +70,15 @@ public class ReplyController {
         Topic topic;
         Reply replyTo = null;
 
-        if (Objects.isNull(topicId) || !topicRepository.existsById(topicId) ) {
+        if (Objects.isNull(topicId) || !topicRepository.existsById(topicId)) {
             throw new ResourceNotFoundException();
         } else {
-            topic = topicRepository.findById(topicId).get();
+            topic = topicRepository.findById(topicId).orElse(new Topic());
             model.addAttribute("topic", topic);
         }
 
         if (Objects.nonNull(replyId) && replyRepository.existsById(replyId)) {
-            replyTo = replyRepository.findById(replyId).get();
+            replyTo = replyRepository.findById(replyId).orElse(new Reply());
             model.addAttribute("replyTo", replyTo);
             reply.setReplyTo(replyTo);
         }
@@ -99,7 +99,7 @@ public class ReplyController {
 
         } else {
 
-            Reply editReply = replyRepository.findById(reply.getId()).get();
+            Reply editReply = replyRepository.findById(reply.getId()).orElse(new Reply());
 
             if (!(userService.isCurrentUserId(editReply.getUser().getId()) || userService.hasRole("ROLE_MODERATOR"))) {
                 throw new AccessDeniedException("This user can't edit this reply");
@@ -121,7 +121,7 @@ public class ReplyController {
     public String edit(@PathVariable Long id, ModelMap model) {
         model.addAttribute("title", "Edit reply");
 
-        Reply reply = replyRepository.findById(id).get();
+        Reply reply = replyRepository.findById(id).orElse(new Reply());
 
         if (Objects.isNull(reply)) {
             throw new ResourceNotFoundException();
@@ -150,7 +150,7 @@ public class ReplyController {
     public String confirmRemoval(@PathVariable Long id, ModelMap model) {
         model.addAttribute("title", "Delete reply");
 
-        Reply reply = replyRepository.findById(id).get();
+        Reply reply = replyRepository.findById(id).orElse(new Reply());
 
         if (Objects.isNull(reply)) {
             throw new ResourceNotFoundException();
@@ -164,7 +164,7 @@ public class ReplyController {
     @PostMapping("/{id}/delete")
     public String remove(@PathVariable Long id) {
 
-        Reply reply = replyRepository.findById(id).get();
+        Reply reply = replyRepository.findById(id).orElse(new Reply());
 
         if (Objects.isNull(reply)) {
             throw new ResourceNotFoundException();

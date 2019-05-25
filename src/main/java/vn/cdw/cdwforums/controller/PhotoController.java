@@ -1,5 +1,6 @@
 package vn.cdw.cdwforums.controller;
 
+
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +26,7 @@ public class PhotoController {
     @GetMapping("/photo")
     public void showImage(@RequestParam("id") Long imageId, HttpServletResponse response) throws IOException {
 
-        Photo photo = photoRepository.findById(imageId).get();
-
+        Photo photo = photoRepository.findById(imageId).orElse(new Photo());
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
         response.getOutputStream().write(photo.getPhoto());
         response.getOutputStream().close();

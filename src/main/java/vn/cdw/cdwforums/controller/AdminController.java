@@ -1,11 +1,9 @@
-
 package vn.cdw.cdwforums.controller;
 
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -61,7 +59,7 @@ public class AdminController {
         }
 
         model.addAttribute("title", "Update user");
-        model.addAttribute("user", userRepository.findById(id));
+        model.addAttribute("user", userRepository.findById(id).orElse(new User()));
         model.addAttribute("roles", roleRepository.findAll());
 
         return "admin/users/edit";
@@ -83,8 +81,7 @@ public class AdminController {
             }
         }
 
-        Optional<User> oUser = userRepository.findById(id);
-        User user= oUser.get();
+        User user = userRepository.findById(id).orElse(new User());
         user.setRoles(newRoles);
         userRepository.save(user);
 
@@ -118,8 +115,7 @@ public class AdminController {
         }
 
         if (Objects.nonNull(parentId) && sectionRepository.existsById(parentId)) {
-        	
-            section.setParent((sectionRepository.findById(parentId)).get());
+            section.setParent(sectionRepository.findById(parentId).orElse(new Section()));
         }
 
         if (Objects.isNull(section.getId())) {
@@ -136,7 +132,7 @@ public class AdminController {
     public String edit(@PathVariable Long id, ModelMap model) {
         model.addAttribute("title", "Edit section");
 
-        Section section = (sectionRepository.findById(id)).get();
+        Section section = sectionRepository.findById(id).orElse(new Section());
 
         if (Objects.isNull(section)) {
             throw new ResourceNotFoundException();
@@ -160,7 +156,7 @@ public class AdminController {
             throw new ResourceNotFoundException();
         }
 
-        model.addAttribute("section", sectionRepository.findById(id));
+        model.addAttribute("section", sectionRepository.findById(id).orElse(new Section()));
 
         return "admin/sections/delete";
     }

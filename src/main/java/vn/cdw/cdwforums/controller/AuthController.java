@@ -1,5 +1,6 @@
 package vn.cdw.cdwforums.controller;
 
+
 import java.util.Date;
 
 import javax.validation.Valid;
@@ -67,7 +68,7 @@ public class AuthController {
         model.addAttribute("title", "Sign In");
 
         if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
+            model.addAttribute("error", "Tài khoản hoặc mật khẩu không trùng.");
 
         return "auth/login";
     }

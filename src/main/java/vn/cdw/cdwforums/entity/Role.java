@@ -24,17 +24,15 @@ public class Role implements GrantedAuthority {
     private String name;
 
     @Column(unique = true)
-
     private String authority;
 
     @Override
-    public String toString() {
-        return name;
-    }
+	public String toString() {
+		return name;
+	}
 
 	@Override
 	public String getAuthority() {
-		// TODO Auto-generated method stub
 		return authority;
 	}
 
@@ -58,10 +56,6 @@ public class Role implements GrantedAuthority {
 		this.authority = authority;
 	}
 
-	public Role() {
-		super();
-	}
-	
 	
 }
 

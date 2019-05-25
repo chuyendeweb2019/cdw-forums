@@ -78,6 +78,9 @@
 			<version>1.17.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity4 -->
+
+
 	</dependencies>
 
 	<build>

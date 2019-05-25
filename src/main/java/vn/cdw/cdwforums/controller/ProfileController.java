@@ -4,7 +4,6 @@ package vn.cdw.cdwforums.controller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -49,14 +48,14 @@ public class ProfileController {
     @GetMapping("/profile")
     public String profile(Model model) {
         model.addAttribute("title", "Profile");
-        model.addAttribute("user", userRepository.findById(userService.getCurrentUser().getId()));
+        model.addAttribute("user", userRepository.findById(userService.getCurrentUser().getId()).orElse(new User()));
         return "profile/view";
     }
 
     @GetMapping("/profile/edit/photo")
     public String editPhoto(Model model) {
         model.addAttribute("title", "Edit photo");
-        model.addAttribute("user", userRepository.findById(userService.getCurrentUser().getId()));
+        model.addAttribute("user", userRepository.findById(userService.getCurrentUser().getId()).orElse(new User()));
         return "profile/edit/photo";
     }
 
@@ -70,9 +69,7 @@ public class ProfileController {
                         .forceSize(ForumConstants.PHOTO_WIDTH, ForumConstants.PHOTO_HEIGHT)
                         .toOutputStream(byteArrayOutputStream);
 
-                Optional<User> oUser = userRepository.findById(userService.getCurrentUser().getId());
-                User user = oUser.get();
-                
+                User user = userRepository.findById(userService.getCurrentUser().getId()).orElse(new User());
                 Photo oldUserPhoto = photoRepository.findByUserId(user.getId());
 
                 if (Objects.nonNull(oldUserPhoto)) {
@@ -108,8 +105,7 @@ public class ProfileController {
             return "profile/edit/password";
         }
 
-        Optional<User> oUser = userRepository.findById(userService.getCurrentUser().getId());
-        User user = oUser.get();
+        User user = userRepository.findById(userService.getCurrentUser().getId()).orElse(new User());
         user.setPassword(passwordEncoder.encode(changePasswordForm.getNewPassword()));
         userRepository.save(user);
 
