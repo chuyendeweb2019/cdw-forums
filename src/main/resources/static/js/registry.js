@@ -111,7 +111,7 @@
 		            dataType : 'json',
 		            success : function(result) {
 		              if(result){
-		               alert("Đăng kí thành công!");
+		                  window.location.href = "/";
 		              }else{
 		            	  alert("Đăng kí thất bại!");
 		              }
