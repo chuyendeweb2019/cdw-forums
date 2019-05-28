@@ -1,134 +1,157 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      th:include="layouts/default :: page">
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	th:include="layouts/default :: page">
 <body>
-<div th:fragment="content">
-    <div class="page-header">
-        <h1 th:text="${topic.title}">Title Topic</h1>
-    </div>
-    <table class="table table-bordered box-shadow bg-white">
-        <tbody>
-        <!--Topic-->
-        <tr>
-            <td class="text-center bg-light user-info">
-                <figure class="figure">
-                    <img th:src="${topic.user.photoExist} ? ('/photo?id=' + ${topic.user.photo.id}) : ${T(pro.ofitserov.forumtest1.util.ForumConstants).PHOTO_DEFAULT}"
-                         src="" class="img-thumbnail user-photo" th:alt="${topic.user.username}"/>
-                    <figcaption class="figure-caption">
-                        <span th:text="${topic.user.username}">username</span><br/>
-                        <span th:text="#{topic.user.posts(${topic.user.countPosts})}">posts</span>
-                    </figcaption>
-                </figure>
-            </td>
-            <td>
-                <div class="reply-published small text-right">
-                    <span th:text="#{topic.reply.published(${topic.dateOfPublication})}">published on</span>&nbsp;&nbsp;
-                    <span th:if="${topic.isChanged}"
-                          th:text="#{topic.reply.changed(${topic.dateOfChange})}">changed on</span>
-                </div>
-                <div th:utext="${#strings.replace(#strings.escapeXml(topic.text),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></div>
-                <div sec:authorize="isAuthenticated()" class="container">
-                    <hr/>
-                    <div class="row">
-                        <div class="col">
-                            <a sec:authorize="${hasRole('MODERATOR')}" th:href="@{/topic/{id}/delete(id=${topic.id})}"
-                               th:text="#{topic.reply.btn.delete}" class="btn btn-danger btn-sm">Delete</a>
-                            <a sec:authorize="${hasRole('MODERATOR')}" th:href="@{/topic/{id}/edit(id=${topic.id})}"
-                               th:text="#{topic.reply.btn.moderate}" class="btn btn-warning btn-sm">Moderate</a>
-                        </div>
-                        <div sec:authorize="${hasRole('USER')}" th:switch="${userId==topic.user.id}"
-                             class="col text-right">
-                            <a th:case="true" th:href="@{/topic/{id}/edit(id=${topic.id})}"
-                               th:text="#{topic.reply.btn.edit}"
-                               class="btn btn-outline-secondary btn-sm">Edit</a>
-                            <a th:case="false" th:href="@{/reply/add(topic_id=${topic.id})}"
-                               th:text="#{topic.reply.btn.reply}"
-                               class="btn btn-outline-primary btn-sm">Reply</a>
-                        </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <!--Replies-->
-    <table th:each="reply : ${replies}" class="table table-bordered box-shadow bg-white">
-        <tbody>
-        <tr>
-            <td class="text-center bg-light user-info">
-                <figure class="figure">
-                    <img th:src="${reply.user.photoExist} ? ('/photo?id=' + ${reply.user.photo.id}) : ${T(pro.ofitserov.forumtest1.util.ForumConstants).PHOTO_DEFAULT}"
-                         src="" class="img-thumbnail user-photo" th:alt="${reply.user.username}"/>
-                    <figcaption class="figure-caption">
-                        <span th:text="${reply.user.username}">username</span><br/>
-                        <span th:text="#{topic.user.posts(${reply.user.countPosts})}">posts</span>
-                    </figcaption>
-                </figure>
-            </td>
-            <td>
-                <div class="reply-published small text-right">
-                    <span th:text="#{topic.reply.published(${reply.dateOfPublication})}">published</span>&nbsp;&nbsp;
-                    <span th:if="${reply.isChanged}"
-                          th:text="#{topic.reply.changed(${reply.dateOfChange})}">changed</span>
-                </div>
-                <blockquote th:if="${reply.replyTo!=null}" class="blockquote bg-light">
-                    <div class="reply-published small text-left">
-                        <span th:text="#{topic.reply.published(${reply.replyTo.dateOfPublication})}">published</span>&nbsp;&nbsp;
-                        <span th:if="${reply.replyTo.isChanged}"
-                              th:text="#{topic.reply.changed(${reply.replyTo.dateOfChange})}">changed</span>
-                    </div>
-                    <div th:utext="${#strings.replace(#strings.escapeXml(reply.replyTo.text),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></div>
-                    <footer th:text="${reply.replyTo.user.username}" class="blockquote-footer">username</footer>
-                </blockquote>
-                <div th:utext="${#strings.replace(#strings.escapeXml(reply.text),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></div>
-                <div sec:authorize="isAuthenticated()" class="container">
-                    <hr/>
-                    <div class="row">
-                        <div class="col">
-                            <a sec:authorize="${hasRole('MODERATOR')}" th:href="@{/reply/{id}/delete(id=${reply.id})}"
-                               href="#"
-                               th:text="#{topic.reply.btn.delete}" class="btn btn-danger btn-sm">Delete</a>
-                            <a sec:authorize="${hasRole('MODERATOR')}" th:href="@{/reply/{id}/edit(id=${reply.id})}"
-                               href="#"
-                               th:text="#{topic.reply.btn.moderate}" class="btn btn-warning btn-sm">Moderate</a>
-                        </div>
-                        <div sec:authorize="${hasRole('USER')}" th:switch="${userId==reply.user.id}"
-                             class="col text-right">
-                            <a th:case="true" th:href="@{/reply/{id}/edit(id=${reply.id})}"
-                               th:text="#{topic.reply.btn.edit}"
-                               class="btn btn-outline-secondary btn-sm">Edit</a>
-                            <a th:case="false" th:href="@{/reply/add(topic_id=${topic.id},reply_id=${reply.id})}"
-                               th:text="#{topic.reply.btn.reply}"
-                               class="btn btn-outline-primary btn-sm">Reply</a>
-                        </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <nav th:if="${replies}">
-        <ul class="pagination" th:if="${replies.totalPages} > 1">
-            <li th:each="pageNumber : ${#numbers.sequence(0, replies.totalPages - 1)}"
-                th:classappend="${replies.number == pageNumber}?'active'" class="page-item">
-                <a th:href="@{/topic/{topic}(topic=${topic.id},page=${pageNumber},size=${replies.size})}"
-                   th:text="${pageNumber + 1}" class="page-link" href="#">-</a>
-            </li>
-        </ul>
-    </nav>
+	<div th:fragment="content">
+		<div class="page-header">
+			<h1 th:text="${topic.title}">Title Topic</h1>
+		</div>
+		<table class="table table-bordered box-shadow bg-white">
+			<tbody>
+				<!--Topic-->
+				<tr>
+					<td class="text-center bg-light user-info">
+						<figure class="figure">
+							<img
+								th:src="${topic.user.photoExist} ? ('/photo?id=' + ${topic.user.photo.id}) : ${T(vn.cdw.cdwforums.util.ForumConstants).PHOTO_DEFAULT}"
+								src="" class="img-thumbnail user-photo"
+								th:alt="${topic.user.username}" />
+							<figcaption class="figure-caption">
+								<span th:text="${topic.user.username}">username</span><br /> <span
+									th:text="#{topic.user.posts(${topic.user.countPosts})}">posts</span>
+							</figcaption>
+						</figure>
+					</td>
+					<td>
+						<div class="reply-published small text-right">
+							<span
+								th:text="#{topic.reply.published(${topic.dateOfPublication})}">published
+								on</span>&nbsp;&nbsp; <span th:if="${topic.isChanged}"
+								th:text="#{topic.reply.changed(${topic.dateOfChange})}">changed
+								on</span>
+						</div>
+						<div
+							th:utext="${#strings.replace(#strings.escapeXml(topic.text),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></div>
+						<div sec:authorize="isAuthenticated()" class="container">
+							<hr />
+							<div class="row">
+								<div class="col">
+									<a sec:authorize="${hasRole('MODERATOR')}"
+										th:href="@{/topic/{id}/delete(id=${topic.id})}"
+										th:text="#{topic.reply.btn.delete}"
+										class="btn btn-danger btn-sm">Delete</a> <a
+										sec:authorize="${hasRole('MODERATOR')}"
+										th:href="@{/topic/{id}/edit(id=${topic.id})}"
+										th:text="#{topic.reply.btn.moderate}"
+										class="btn btn-warning btn-sm">Moderate</a>
+								</div>
+								<div sec:authorize="${hasRole('USER')}"
+									th:switch="${userId==topic.user.id}" class="col text-right">
+									<a th:case="true" th:href="@{/topic/{id}/edit(id=${topic.id})}"
+										th:text="#{topic.reply.btn.edit}"
+										class="btn btn-outline-secondary btn-sm">Edit</a> <a
+										th:case="false" th:href="@{/reply/add(topic_id=${topic.id})}"
+										th:text="#{topic.reply.btn.reply}"
+										class="btn btn-outline-primary btn-sm">Reply</a>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!--Replies-->
+		<table th:each="reply : ${replies}"
+			class="table table-bordered box-shadow bg-white">
+			<tbody>
+				<tr>
+					<td class="text-center bg-light user-info">
+						<figure class="figure">
+							<img
+								th:src="${reply.user.photoExist} ? ('/photo?id=' + ${reply.user.photo.id}) : ${T(vn.cdw.cdwforums.util.ForumConstants).PHOTO_DEFAULT}"
+								src="" class="img-thumbnail user-photo"
+								th:alt="${reply.user.username}" />
+							<figcaption class="figure-caption">
+								<span th:text="${reply.user.username}">username</span><br /> <span
+									th:text="#{topic.user.posts(${reply.user.countPosts})}">posts</span>
+							</figcaption>
+						</figure>
+					</td>
+					<td>
+						<div class="reply-published small text-right">
+							<span
+								th:text="#{topic.reply.published(${reply.dateOfPublication})}">published</span>&nbsp;&nbsp;
+							<span th:if="${reply.isChanged}"
+								th:text="#{topic.reply.changed(${reply.dateOfChange})}">changed</span>
+						</div>
+						<blockquote th:if="${reply.replyTo!=null}"
+							class="blockquote bg-light">
+							<div class="reply-published small text-left">
+								<span
+									th:text="#{topic.reply.published(${reply.replyTo.dateOfPublication})}">published</span>&nbsp;&nbsp;
+								<span th:if="${reply.replyTo.isChanged}"
+									th:text="#{topic.reply.changed(${reply.replyTo.dateOfChange})}">changed</span>
+							</div>
+							<div
+								th:utext="${#strings.replace(#strings.escapeXml(reply.replyTo.text),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></div>
+							<footer th:text="${reply.replyTo.user.username}"
+								class="blockquote-footer">username</footer>
+						</blockquote>
+						<div
+							th:utext="${#strings.replace(#strings.escapeXml(reply.text),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></div>
+						<div sec:authorize="isAuthenticated()" class="container">
+							<hr />
+							<div class="row">
+								<div class="col">
+									<a sec:authorize="${hasRole('MODERATOR')}"
+										th:href="@{/reply/{id}/delete(id=${reply.id})}" href="#"
+										th:text="#{topic.reply.btn.delete}"
+										class="btn btn-danger btn-sm">Delete</a> <a
+										sec:authorize="${hasRole('MODERATOR')}"
+										th:href="@{/reply/{id}/edit(id=${reply.id})}" href="#"
+										th:text="#{topic.reply.btn.moderate}"
+										class="btn btn-warning btn-sm">Moderate</a>
+								</div>
+								<div sec:authorize="${hasRole('USER')}"
+									th:switch="${userId==reply.user.id}" class="col text-right">
+									<a th:case="true" th:href="@{/reply/{id}/edit(id=${reply.id})}"
+										th:text="#{topic.reply.btn.edit}"
+										class="btn btn-outline-secondary btn-sm">Edit</a> <a
+										th:case="false"
+										th:href="@{/reply/add(topic_id=${topic.id},reply_id=${reply.id})}"
+										th:text="#{topic.reply.btn.reply}"
+										class="btn btn-outline-primary btn-sm">Reply</a>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<nav th:if="${replies}">
+			<ul class="pagination" th:if="${replies.totalPages} > 1">
+				<li
+					th:each="pageNumber : ${#numbers.sequence(0, replies.totalPages - 1)}"
+					th:classappend="${replies.number == pageNumber}?'active'"
+					class="page-item"><a
+					th:href="@{/topic/{topic}(topic=${topic.id},page=${pageNumber},size=${replies.size})}"
+					th:text="${pageNumber + 1}" class="page-link" href="#">-</a></li>
+			</ul>
+		</nav>
 
 
-    <div sec:authorize="isAuthenticated()" class="text-right pt-2">
-        <a th:href="@{/reply/add(topic_id=${topic.id})}" th:text="#{topic.btn.reply}"
-           class="btn btn-primary btn-lg text-center">Reply</a>
-    </div>
+		<div sec:authorize="isAuthenticated()" class="text-right pt-2">
+			<a th:href="@{/reply/add(topic_id=${topic.id})}"
+				th:text="#{topic.btn.reply}"
+				class="btn btn-primary btn-lg text-center">Reply</a>
+		</div>
 
-    <div sec:authorize="isAnonymous()" th:remove="tag">
-        <div th:utext="#{bottom.userNotAuthenticated}"
-             class="text-secondary text-center pt-4 bottom-user-not-authenticated">userNotAuthenticated
-        </div>
-    </div>
-</div>
+		<div sec:authorize="isAnonymous()" th:remove="tag">
+			<div th:utext="#{bottom.userNotAuthenticated}"
+				class="text-secondary text-center pt-4 bottom-user-not-authenticated">userNotAuthenticated
+			</div>
+		</div>
+	</div>
 </body>
 </html>
