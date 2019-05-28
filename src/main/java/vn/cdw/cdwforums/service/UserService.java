@@ -43,6 +43,21 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
+    public boolean loadByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (Objects.isNull(user)) {
+        	 return false;
+        }
+        return true;
+    }
+
+    public boolean loadUserByEmail(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
+        if (Objects.isNull(user)) {
+            return false;
+        }
+        return true;
+    }
 
     public void signupUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
