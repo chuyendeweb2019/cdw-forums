@@ -43,21 +43,6 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
-    public boolean loadByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (Objects.isNull(user)) {
-        	 return false;
-        }
-        return true;
-    }
-
-    public boolean loadUserByEmail(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
-        if (Objects.isNull(user)) {
-            return false;
-        }
-        return true;
-    }
 
     public void signupUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -73,8 +58,6 @@ public class UserService implements UserDetailsService {
         if (userDetails instanceof User) {
             user = (User) userDetails;
         }
-        
-        System.out.println("-------------------------"+user.getRoles());
         return user;
     }
 
@@ -87,7 +70,7 @@ public class UserService implements UserDetailsService {
         Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (Objects.nonNull(object)) {
             try {
-                UserDetails userDetails =  (UserDetails) object;
+                UserDetails userDetails = (UserDetails) object;
                 User user;
                 if (userDetails instanceof User) {
                     user = (User) userDetails;
@@ -102,8 +85,9 @@ public class UserService implements UserDetailsService {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
 	public boolean hasRole(String role) {
-        Collection<? extends GrantedAuthority> authorities = 
+        Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
         boolean hasRole = false;
@@ -113,8 +97,6 @@ public class UserService implements UserDetailsService {
                 break;
             }
         }
-        System.out.println("-------------------------"+role);
-
         return hasRole;
     }
 }

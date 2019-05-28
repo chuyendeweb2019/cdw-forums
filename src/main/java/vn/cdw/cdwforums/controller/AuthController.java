@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,9 +13,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import vn.cdw.cdwforums.controller.form.UserRegistrationForm;
 import vn.cdw.cdwforums.controller.validator.UserFormValidator;
@@ -45,53 +41,25 @@ public class AuthController {
         model.addAttribute("userRegistrationForm", new UserRegistrationForm());
         return "auth/registration";
     }
-    
-   
-    @GetMapping("/isUsername")
-    public @ResponseBody boolean isUser(@RequestParam String username) {
-        
-        return  this.userService.loadByUsername(username);    }
-    
-    @GetMapping("/isEmail")
-    public @ResponseBody boolean isEmail(@RequestParam String email) {
-        
-        return  this.userService.loadUserByEmail(email);    }
-//   
-//    @PostMapping("/registration")
-//    public String registration(
-//            @Valid UserRegistrationForm userRegistrationForm,
-//            BindingResult bindingResult) {
-//
-//        if (bindingResult.hasErrors()) {
-//            return "auth/registration";
-//        }
-//
-//        User user = new User();
-//        user.setUsername(userRegistrationForm.getUsername());
-//        user.setEmail(userRegistrationForm.getEmail());
-//        user.setPassword(userRegistrationForm.getPassword());
-//        user.setDateOfRegistration(new Date());
-//
-//        userService.signupUser(user);
-//
-//        return "redirect:/";
-//    }
-    @PostMapping("/ajax-registration")
-    public @ResponseBody boolean ajaxRegistration(
-            @RequestBody UserRegistrationForm userRegistrationForm) {
+
+    @PostMapping("/registration")
+    public String registration(
+            @Valid UserRegistrationForm userRegistrationForm,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "auth/registration";
+        }
+
         User user = new User();
         user.setUsername(userRegistrationForm.getUsername());
         user.setEmail(userRegistrationForm.getEmail());
         user.setPassword(userRegistrationForm.getPassword());
         user.setDateOfRegistration(new Date());
-        try {
-      	 userService.signupUser(user);     
-      	 return true;
-		} catch (Exception e) {
-			// TODO: handle exception
-		  return false;
-	}
-      
+
+        userService.signupUser(user);
+
+        return "redirect:/";
     }
 
     @GetMapping("/login")
