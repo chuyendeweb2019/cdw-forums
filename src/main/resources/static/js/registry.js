@@ -10,12 +10,12 @@
 		  Object.keys(formData).forEach( r =>
 		  formData[r].keyup(function() { 
 			  if( r === 'password'|| r === 'confirmPassword') {
-				 //mat khau yeu cau tu 4-12 ki tu
+				 // mat khau yeu cau tu 4-12 ki tu
 				  if( formData[r].val().length > 3 && formData[r].val().length < 12) {
 					  $('#'+ r + 'Error').html("");
 					   if(formData['password'].val() != "" && formData['confirmPassword'].val() != "" ) {
 						   if(formData['password'].val() === formData['confirmPassword'].val()) {
-							   //console.log("hople")
+							   // console.log("hople")
 						    	 $('#passwordError').html("");
 						    	 $('#confirmPasswordError').html("");
 						  } else {
@@ -31,7 +31,7 @@
 				 
 			  }
 			  if(r === "email") {
-				//  console.log(formData[r].val());
+				// console.log(formData[r].val());
 				 if(validateEmail(formData[r].val()))  {
 					 // send server
 					 $.ajax({
@@ -57,7 +57,7 @@
 				 }
 			  }
 			  if(r === "username") {
-					//  console.log(formData[r].val());
+					// console.log(formData[r].val());
 					 if(formData[r].val().length !==0)  {
 						 // send server
 						 $.ajax({
@@ -89,7 +89,7 @@
 		    event.preventDefault();
 		    xulydangky();
 		  });
-		    //dinh dang email
+		    // dinh dang email
 		    function validateEmail(email) {
 		        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		        return re.test(String(email).toLowerCase());
