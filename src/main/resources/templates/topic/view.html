@@ -13,7 +13,7 @@
         <tr>
             <td class="text-center bg-light user-info">
                 <figure class="figure">
-                    <img th:src="${topic.user.photoExist} ? ('/photo?id=' + ${topic.user.photo.id}) : ${T(pro.ofitserov.forumtest1.util.ForumConstants).PHOTO_DEFAULT}"
+                    <img th:src="${topic.user.photoExist} ? ('/photo?id=' + ${topic.user.photo.id}) : ${T(vn.cdw.cdwforums.util.ForumConstants).PHOTO_DEFAULT}"
                          src="" class="img-thumbnail user-photo" th:alt="${topic.user.username}"/>
                     <figcaption class="figure-caption">
                         <span th:text="${topic.user.username}">username</span><br/>
@@ -58,7 +58,7 @@
         <tr>
             <td class="text-center bg-light user-info">
                 <figure class="figure">
-                    <img th:src="${reply.user.photoExist} ? ('/photo?id=' + ${reply.user.photo.id}) : ${T(pro.ofitserov.forumtest1.util.ForumConstants).PHOTO_DEFAULT}"
+                    <img th:src="${reply.user.photoExist} ? ('/photo?id=' + ${reply.user.photo.id}) : ${T(vn.cdw.cdwforums.util.ForumConstants).PHOTO_DEFAULT}"
                          src="" class="img-thumbnail user-photo" th:alt="${reply.user.username}"/>
                     <figcaption class="figure-caption">
                         <span th:text="${reply.user.username}">username</span><br/>
