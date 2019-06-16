@@ -24,10 +24,11 @@
 			</div>
 			<div class="form-group">
 				<label th:text="#{topic.label.text}" for="text">Text</label>
-				<textarea class="form-control" id="text" th:field="*{text}"
+				<textarea class="form-control" id="editor" th:field="*{text}"
 					th:required="required" rows="5"></textarea>
 
-				<div id="editor"></div>
+
+				<!-- 
 
 				<label th:if="${#fields.hasErrors('text')}" class="error"
 					style="display: inline-block;">
@@ -35,19 +36,36 @@
 						<li th:each="err : ${#fields.errors('text')}" th:text="${err}"></li>
 					</ul>
 				</label>
+				 -->
 			</div>
 			<input type="submit" th:value="${title}"
 				class="btn btn-lg btn-primary" value="Submit" />
 		</form>
+    <script>
+    $( document ).ready(function() {
+    	CKEDITOR.replace('editor', {
+    		  enterMode: CKEDITOR.ENTER_BR,
+    		  shiftEnterMode:CKEDITOR.ENTER_P,
+    		  toolbar: [{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', "-", 'TextColor', 'BGColor' ] },
+    		             { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
+    		             { name: 'scripts', items: [ 'Subscript', 'Superscript' ] },
+    		             { name: 'justify', groups: [ 'blocks', 'align' ], items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+    		             { name: 'paragraph', groups: [ 'list', 'indent' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'] },
+    		             { name: 'links', items: [ 'Link', 'Unlink' ] },
+    		             { name: 'insert', items: [ 'Image'] },
+    		             { name: 'spell', items: [ 'jQuerySpellChecker' ] },
+    		             { name: 'table', items: [ 'Table' ] }
+    		             ],
+    		});
 
+    });
+		
+		</script>
 	</div>
 
 </body>
 
-<script src="ckeditor/ckeditor.js"></script>
 
-<script>
-CKEDITOR.replace( 'editor );
-</script>
+
 
 </html>
