@@ -16,7 +16,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @SpringBootApplication
 @ComponentScan({ "vn.cdw.cdwforums.config", "vn.cdw.cdwforums.controller", "vn.cdw.cdwforums.controller"
 	, "vn.cdw.cdwforums.controller.form", "vn.cdw.cdwforums.controller.validator", "vn.cdw.cdwforums.entity"
-	, "vn.cdw.cdwforums.reponsitory", "vn.cdw.cdwforums.service", "vn.cdw.cdwforums.util"})
+	, "vn.cdw.cdwforums.reponsitory", "vn.cdw.cdwforums.service", "vn.cdw.cdwforums.util","vn.cdw.cdwforums.interceptor","vn.cdw.cdwforums.listener"})
 
 public class CdwForumsApplication {
 
