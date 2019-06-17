@@ -1,6 +1,6 @@
 package vn.cdw.cdwforums.entity;
 
-public class Chat {
+public class ChatMessage {
 	private MessageType type;
     private String content;
     private String sender;
