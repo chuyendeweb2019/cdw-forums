@@ -8,10 +8,10 @@
         <h1 th:text="#{login.heading}">Sign In</h1>
     </div>
     <div th:if="${param.error}" class="alert alert-danger">
-        Invalid username or password.
+        Tài khoản hoặc mật khẩu không hợp lệ.
     </div>
     <div sec:authorize="isAuthenticated()" class="alert alert-warning">
-        You are already authenticated.
+		Bạn đã đăng nhập.
         <form th:action="@{/logout}" method="post">
             <button type="submit" th:text="#{header.logout}" class="btn btn-link">Logout</button>
         </form>

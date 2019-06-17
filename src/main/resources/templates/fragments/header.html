@@ -5,10 +5,10 @@
 <body>
 	<header th:fragment="header"
 		class="navbar navbar-expand navbar-white bg-white flex-column flex-md-row border-bottom box-shadow">
-		<a th:href="@{/}" href="#" th:text="#{header.siteName}"
-			class="navbar-brand text-dark my-0 mr-md-auto">My Forum</a>
+				<img src="/images/logo.png" class="navbar-brand text-dark my-0 mr-md-auto" alt="Logo" style="width: 10%">
 
-		<nav class="my-2 my-md-0 mr-md-3">
+		<nav class="navbar navbar-down">
+		<ul class="nav navbar-nav flex-item hidden-xs"></ul>
 			<a th:href="@{/}" th:text="#{header.menu.home}" class="p-2 text-dark"
 				href="#">home</a> <a th:href="@{#}"
 				th:target="_blank" th:text="#{header.menu.report}"
