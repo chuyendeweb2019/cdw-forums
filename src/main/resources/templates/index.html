@@ -7,9 +7,6 @@
 			<h2 th:text="#{home.welcome}"></h2>
 		</div>
 
-
-
-
 		<section id="tabs" class="project-tab">
 			<div class="container">
 				<div class="row">
@@ -18,11 +15,8 @@
 							<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
 								<a class="nav-item nav-link active" id="nav-home-tab"
 									data-toggle="tab" href="#nav-home" role="tab"
-									aria-controls="nav-home" aria-selected="true">Mới trả lời</a> <a
-									class="nav-item nav-link" id="nav-profile-tab"
-									data-toggle="tab" href="#nav-profile" role="tab"
-									aria-controls="nav-profile" aria-selected="false">Bài viết
-									mới </a> <a class="nav-item nav-link" id="nav-contact-tab"
+									aria-controls="nav-home" aria-selected="true">Mới trả lời</a>
+									<a class="nav-item nav-link" id="nav-contact-tab"
 									data-toggle="tab" href="#nav-contact" role="tab"
 									aria-controls="nav-contact" aria-selected="false">Bài viết
 									hay nhất </a>
@@ -36,30 +30,7 @@
 										<tr>
 											<th>Bài viết</th>
 											<th>Tác giả</th>
-											<th>Danh mục</th>
 											<th>Lúc</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr th:each="topic : ${topic}">
-											<td><a th:href="@{/topic/{id}/(id=${topic.id})}"
-												th:text="${topic.title}"></a></td>
-											<td th:text="${topic.user.username}">user name</td>
-											<td th:text="${topic.section.title}"></td>
-											<td th:text="${topic."
-										</tr>
-
-									</tbody>
-								</table>
-							</div>
-							<div class="tab-pane fade" id="nav-profile" role="tabpanel"
-								aria-labelledby="nav-profile-tab">
-								<table class="table" cellspacing="0">
-									<thead>
-										<tr>
-											<th>Bài viết</th>
-											<th>Tác giả</th>
-											<th>Cập nhật lúc</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -73,6 +44,7 @@
 									</tbody>
 								</table>
 							</div>
+							
 							<div class="tab-pane fade" id="nav-contact" role="tabpanel"
 								aria-labelledby="nav-contact-tab">
 								<table class="table" cellspacing="0">
@@ -101,10 +73,6 @@
 				</div>
 			</div>
 		</section>
-
-
-
-
 
 		<table class="table table-bordered">
 			<thead>

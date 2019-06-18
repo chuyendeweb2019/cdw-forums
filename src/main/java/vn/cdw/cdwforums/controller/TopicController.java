@@ -57,7 +57,7 @@ public class TopicController {
             model.addAttribute("section", sectionRepository.findById(sectionId).orElse(new Section()));
         }
 
-        model.addAttribute("title", "Add topic");
+        model.addAttribute("title", "Thêm bài viết");
         model.addAttribute("topic", new Topic());
         return "topic/add";
     }
