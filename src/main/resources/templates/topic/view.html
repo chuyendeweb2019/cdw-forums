@@ -27,7 +27,7 @@
                     <span th:if="${topic.isChanged}"
                           th:text="#{topic.reply.changed(${topic.dateOfChange})}">changed on</span>
                 </div>
-                <div th:utext="${#strings.replace(#strings.escapeXml(topic.text),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></div>
+                <div th:utext="${topic.text}"></div>
                 <div sec:authorize="isAuthenticated()" class="container">
                     <hr/>
                     <div class="row">
@@ -79,9 +79,10 @@
                               th:text="#{topic.reply.changed(${reply.replyTo.dateOfChange})}">changed</span>
                     </div>
                     <div th:utext="${#strings.replace(#strings.escapeXml(reply.replyTo.text),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></div>
-                    <footer th:text="${reply.replyTo.user.username}" class="blockquote-footer">username</footer>
+                    <footer th:utext="${reply.replyTo.user.username}" class="blockquote-footer">username</footer>
                 </blockquote>
                 <div th:utext="${#strings.replace(#strings.escapeXml(reply.text),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></div>
+                
                 <div sec:authorize="isAuthenticated()" class="container">
                     <hr/>
                     <div class="row">

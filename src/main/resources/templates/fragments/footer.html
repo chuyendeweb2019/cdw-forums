@@ -15,20 +15,18 @@
          <div class="chat-header">
             <div class="user-container">
                <span id="username" th:utext="${username}"></span>
-               <a th:href="@{/logout}">Logout</a>
+               <a th:href="@{/logout}">Đăng xuất</a>
             </div>
-            <h3>Spring WebSocket Chat Demo</h3>
          </div>
           <form id="messageForm" name="messageForm">
             <div class="input-message">
                <input type="text" id="message" autocomplete="off"
-                  placeholder="Type a message..."/>
-               <button type="submit">Send</button>
+                  placeholder="Nội dung tin nhắn ..."/>
+               <button type="submit">Gửi</button>
             </div>
          </form>
          <hr/>
           
-         <div id="connecting">Connecting...</div>
          <ul id="messageArea">
          </ul>
          

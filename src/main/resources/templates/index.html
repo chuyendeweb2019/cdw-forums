@@ -1,36 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:include="layouts/default :: page">
+	th:include="layouts/default :: page">
 <body>
-<div th:fragment="content">
-    <div class="page-header">
-        <h1 th:text="#{home.welcome}"></h1>
-    </div>
-    <h2 th:text="#{section.home}"></h2>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th class="w-75"><span th:text="#{section.title}">th</span></th>
-            <th><span th:text="#{section.topics}">th</span></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="section : ${sections}">
-            <td><a th:href="@{/section/{id}/(id=${section.id})}" th:text="${section.title}">-</a>
-                <div th:text="${section.text}" class="forum-desc">forum-desc</div>
-                <div th:if="${section.isParent}" class="forum-subforums">
-                    <span th:text="#{section.subsection}"></span>
-                    <ul class="m-0">
-                        <li th:each="subsection : ${section.subsections}">
-                            <a th:href="@{/section/{id}/(id=${subsection.id})}" th:text="${subsection.title}"></a>
-                        </li>
-                    </ul>
-                </div>
-            </td>
-            <td th:text="${section.topics.size()}"></td>
-        </tr>
-        </tbody>
-    </table>    
-</div>
+	<div th:fragment="content">
+		<div class="page-header">
+			<h2 th:text="#{home.welcome}"></h2>
+		</div>
+
+
+
+
+		<section id="tabs" class="project-tab">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<nav>
+							<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+								<a class="nav-item nav-link active" id="nav-home-tab"
+									data-toggle="tab" href="#nav-home" role="tab"
+									aria-controls="nav-home" aria-selected="true">Mới trả lời</a> <a
+									class="nav-item nav-link" id="nav-profile-tab"
+									data-toggle="tab" href="#nav-profile" role="tab"
+									aria-controls="nav-profile" aria-selected="false">Bài viết
+									mới </a> <a class="nav-item nav-link" id="nav-contact-tab"
+									data-toggle="tab" href="#nav-contact" role="tab"
+									aria-controls="nav-contact" aria-selected="false">Bài viết
+									hay nhất </a>
+							</div>
+						</nav>
+						<div class="tab-content" id="nav-tabContent">
+							<div class="tab-pane fade show active" id="nav-home"
+								role="tabpanel" aria-labelledby="nav-home-tab">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Bài viết</th>
+											<th>Tác giả</th>
+											<th>Danh mục</th>
+											<th>Lúc</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="topic : ${topic}">
+											<td><a th:href="@{/topic/{id}/(id=${topic.id})}"
+												th:text="${topic.title}"></a></td>
+											<td th:text="${topic.user.username}">user name</td>
+											<td th:text="${topic.section.title}"></td>
+											<td th:text="${topic."
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+							<div class="tab-pane fade" id="nav-profile" role="tabpanel"
+								aria-labelledby="nav-profile-tab">
+								<table class="table" cellspacing="0">
+									<thead>
+										<tr>
+											<th>Bài viết</th>
+											<th>Tác giả</th>
+											<th>Cập nhật lúc</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="topic : ${topic2}">
+											<td><a th:href="@{/topic/{id}/(id=${topic.id})}"
+												th:text="${topic.title}"></a></td>
+											<td th:text="${topic.user.username}">user name</td>
+											<td th:text="${topic.dateOfPublication}"></td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+							<div class="tab-pane fade" id="nav-contact" role="tabpanel"
+								aria-labelledby="nav-contact-tab">
+								<table class="table" cellspacing="0">
+									<thead>
+										<tr>
+											<th>Bài viết</th>
+											<th>Tác giả</th>
+											<th>Cập nhật lúc</th>
+											<th>Tổng lượt bình luận</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="topic : ${topic3}">
+											<td><a th:href="@{/topic/{id}/(id=${topic.id})}"
+												th:text="${topic.title}"></a></td>
+											<td th:text="${topic.user.username}">user name</td>
+											<td th:text="${topic.dateOfPublication}"></td>
+											<td th:text="${topic.replies.size()}"></td>	
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+
+
+
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th class="w-75"><span th:text="#{section.title}">th</span></th>
+					<th><span th:text="#{section.topics}">th</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="section : ${sections}">
+					<td><a th:href="@{/section/{id}/(id=${section.id})}"
+						th:text="${section.title}">-</a>
+						<div th:text="${section.text}" class="forum-desc">forum-desc</div>
+						<div th:if="${section.isParent}" class="forum-subforums">
+							<span th:text="#{section.subsection}"></span>
+							<ul class="m-0">
+								<li th:each="subsection : ${section.subsections}"><a
+									th:href="@{/section/{id}/(id=${subsection.id})}"
+									th:text="${subsection.title}"></a></li>
+							</ul>
+						</div></td>
+					<td th:text="${section.topics.size()}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </body>
 </html>

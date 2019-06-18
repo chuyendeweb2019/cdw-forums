@@ -20,7 +20,7 @@ public class ForumConstants {
 
     public static final int PAGE_DEFAULT_SIZE = 5;
 
-    public static final String SEARCH_IN_SECTIONS = "SECTIONS";
-    public static final String SEARCH_IN_TOPICS = "TOPICS";
-    public static final String SEARCH_IN_REPLIES = "REPLIES";
+    public static final String SEARCH_IN_SECTIONS = "Danh mục";
+    public static final String SEARCH_IN_TOPICS = "Bài viết";
+    public static final String SEARCH_IN_REPLIES = "Bình luận";
 }
