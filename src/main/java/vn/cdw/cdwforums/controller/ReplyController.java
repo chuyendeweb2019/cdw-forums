@@ -43,7 +43,7 @@ public class ReplyController {
 
     @GetMapping("/add")
     public String add(@RequestParam("topic_id") Long topicId, @RequestParam(value = "reply_id", required = false) Long replyId, ModelMap model) {
-        model.addAttribute("title", "Add reply");
+        model.addAttribute("title", "Thêm bình luận");
 
         Topic topic;
         Reply replyTo;
@@ -65,7 +65,7 @@ public class ReplyController {
 
     @PostMapping("/add")
     public String update(@RequestParam("topic_id") Long topicId, @RequestParam(value = "reply_id", required = false) Long replyId, @Valid Reply reply, BindingResult result, ModelMap model) {
-        model.addAttribute("title", "Update reply");
+        model.addAttribute("title", "Cập nhật bình luận");
 
         Topic topic;
         Reply replyTo = null;
@@ -102,7 +102,7 @@ public class ReplyController {
             Reply editReply = replyRepository.findById(reply.getId()).orElse(new Reply());
 
             if (!(userService.isCurrentUserId(editReply.getUser().getId()) || userService.hasRole("ROLE_MODERATOR"))) {
-                throw new AccessDeniedException("This user can't edit this reply");
+                throw new AccessDeniedException("Tài khoản không có quyền");
             }
 
             editReply.setText(reply.getText());
@@ -119,7 +119,7 @@ public class ReplyController {
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable Long id, ModelMap model) {
-        model.addAttribute("title", "Edit reply");
+        model.addAttribute("title", "Chỉnh sửa bình luận");
 
         Reply reply = replyRepository.findById(id).orElse(new Reply());
 
@@ -128,7 +128,7 @@ public class ReplyController {
         }
 
         if (!(userService.isCurrentUserId(reply.getUser().getId()) || userService.hasRole("ROLE_MODERATOR"))) {
-            throw new AccessDeniedException("This user can't edit this reply");
+            throw new AccessDeniedException("Tài khoản không có quyền chỉnh sửa bài viết");
         }
 
         if (Objects.isNull(reply.getTopic())) {
@@ -148,7 +148,7 @@ public class ReplyController {
 
     @GetMapping("/{id}/delete")
     public String confirmRemoval(@PathVariable Long id, ModelMap model) {
-        model.addAttribute("title", "Delete reply");
+        model.addAttribute("title", "Xóa bình luận");
 
         Reply reply = replyRepository.findById(id).orElse(new Reply());
 

@@ -34,13 +34,13 @@ public class SearchController {
 
     @GetMapping("/search")
     public String search(ModelMap model) {
-        model.addAttribute("title", "Search");
+        model.addAttribute("title", "Tìm kiếm");
         return "search/search";
     }
 
     @PostMapping("/search")
     public String searchResult(@RequestParam("search_word") String searchWord, @RequestParam("search_in") String searchIn, ModelMap model, @PageableDefault(sort = {"dateOfPublication"}, value = ForumConstants.PAGE_DEFAULT_SIZE, direction = Sort.Direction.ASC) Pageable pageable) {
-        model.addAttribute("title", "Search");
+        model.addAttribute("title", "Tìm kiếm");
 
         switch (searchIn) {
             case ForumConstants.SEARCH_IN_SECTIONS:

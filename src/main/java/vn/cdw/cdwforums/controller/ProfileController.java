@@ -47,14 +47,14 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String profile(Model model) {
-        model.addAttribute("title", "Profile");
+        model.addAttribute("title", "Trang cá nhân");
         model.addAttribute("user", userRepository.findById(userService.getCurrentUser().getId()).orElse(new User()));
         return "profile/view";
     }
 
     @GetMapping("/profile/edit/photo")
     public String editPhoto(Model model) {
-        model.addAttribute("title", "Edit photo");
+        model.addAttribute("title", "Sửa ảnh đại diện");
         model.addAttribute("user", userRepository.findById(userService.getCurrentUser().getId()).orElse(new User()));
         return "profile/edit/photo";
     }
@@ -91,7 +91,7 @@ public class ProfileController {
 
     @GetMapping("/profile/edit/password")
     public String editPassword(Model model) {
-        model.addAttribute("title", "Edit password");
+        model.addAttribute("title", "Thay đổi mật khẩu");
         model.addAttribute("changePasswordForm", new ChangePasswordForm());
         model.addAttribute("minLengthPassword", ForumConstants.PASSWORD_LENGTH_MIN);
         model.addAttribute("maxLengthPassword", ForumConstants.PASSWORD_LENGTH_MAX);

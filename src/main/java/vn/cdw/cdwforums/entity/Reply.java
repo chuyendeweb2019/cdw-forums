@@ -27,7 +27,6 @@ public class Reply {
     private Long id;
 
     @Size(min = ForumConstants.TEXT_LENGTH_MIN, max = ForumConstants.TEXT_LENGTH_MAX)
-
     private String text;
 
     @Temporal(TemporalType.TIMESTAMP)

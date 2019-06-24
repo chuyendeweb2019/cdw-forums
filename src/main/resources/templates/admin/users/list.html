@@ -1,39 +1,62 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:include="layouts/default :: page">
+	th:include="layouts/default :: page">
 <body>
-<div th:fragment="content">
-    <div class="page-header">
-        <h1 th:text="${title}">Users</h1>
-    </div>
-    <table class="table table-striped box-shadow">
-        <thead>
-        <tr>
-            <th th:text="#{admin.th.id}" scope="col">th</th>
-            <th th:text="#{admin.users.th.username}" scope="col">th</th>
-            <th th:text="#{admin.users.th.email}" scope="col">th</th>
-            <th th:text="#{admin.users.th.dateOfRegistration}" scope="col">th</th>
-            <th th:text="#{admin.users.th.posts}" scope="col">th</th>
-            <th th:text="#{admin.users.th.roles}" scope="col">th</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${users}">
-            <td><span th:text="${user.id}">id</span></td>
-            <td><span th:text="${user.username}">username</span></td>
-            <td><span th:text="${user.email}">email</span></td>
-            <td><span th:text="${user.dateOfRegistration}">dateOfRegistration</span></td>
-            <td><span th:text="${user.countPosts}">posts</span></td>
-            <td><span th:text="${user.authorities}">posts</span></td>
-            <td><a th:href="@{/admin/users/{id}/edit(id=${user.id})}"
-                   th:text="#{admin.tr.edit}"
-                   class="btn btn-outline-primary btn-sm">tr</a></td>
-        </tr>
-        </tbody>
-    </table>
+	<div th:fragment="content">
+		<div class="page-header">
+			<h1 th:text="${title}">Users</h1>
+		</div>
+		<table class="table table-striped box-shadow">
+			<thead>
+				<tr>
+					<th th:text="#{admin.th.id}" scope="col">th</th>
+					<th th:text="#{admin.users.th.username}" scope="col">th</th>
+					<th th:text="#{admin.users.th.email}" scope="col">th</th>
+					<th th:text="#{admin.users.th.dateOfRegistration}" scope="col">th</th>
+					<th th:text="#{admin.users.th.posts}" scope="col">th</th>
+					<th th:text="#{admin.users.th.roles}" scope="col">th</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${users}">
+					<td><span th:text="${user.id}">id</span></td>
+					<td><span th:text="${user.username}">username</span></td>
+					<td><span th:text="${user.email}">email</span></td>
+					<td><span th:text="${user.dateOfRegistration}">dateOfRegistration</span></td>
+					<td><span th:text="${user.countPosts}">posts</span></td>
+					<td><span th:text="${user.authorities}">posts</span></td>
+					<td><a th:href="@{/admin/users/{id}/edit(id=${user.id})}"
+						th:text="#{admin.tr.edit}" class="btn btn-outline-primary btn-sm">tr</a></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<div class="row">
+		<ul class="pagination">
+			<li
+				th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+				<a class="page-link"
+				th:href="@{/users?p={i}(i=${currentIndex})}">First</a>
+			</li>
+			<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+				th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+				<a class="page-link" th:href="@{/stockAdmin?p={i}(i=${item})}">
+					<span th:text='${item}'>1</span>
+			</a>
+			</li>
+
+			<li
+				th:class="${currentIndex == totalPage}? 'page-item disabled':'page-item'">
+				<a class="page-link" th:href="@{/users?p={i}(i=${totalPage})}">Last</a>
+			</li>
+		</ul>
+	</div>
+
+	</div>
+	
 
 
-</div>
+	
 </body>
 </html>

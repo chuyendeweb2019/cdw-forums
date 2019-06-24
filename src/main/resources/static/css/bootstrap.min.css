@@ -4,7 +4,8 @@
 }
  
 .nickname  {
-    color:blue;margin-right:20px;
+    color:blue;
+    margin-right:20px;
 }
 .hidden {
     display: none;
@@ -34,15 +35,7 @@
     margin-top: -160px;
 }
   
- 
-#chat-container {
-
-    height: 100%;
-    width:500px;
-    position: fixed !important;
-    right: 0px;
-}
-}
+ 	
  
 #chat-container #messageForm {
     padding: 20px;
@@ -57,8 +50,13 @@
     margin-left: auto;
     margin-right: auto;
     height: calc(100% - 60px);
-    max-height: 600px;
-    position: relative;
+    max-height: 500px;
+    width:500px;
+    position: fixed;
+	right: 0;
+	bottom: 0;
+    
+   
      
 }
  
@@ -69,7 +67,7 @@
     overflow: auto;
     overflow-y: scroll;
     padding: 0 10px 0px 10px;
-    height: calc(100% - 150px);
+    height: calc(100% - 100px);
 }
   
 #chat-container #messageForm {

@@ -29,12 +29,7 @@ public class CdwForumsApplication {
         return new BCryptPasswordEncoder();
     }
 	
-	@Bean
-    public LocaleResolver localeResolver() {
-        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(Locale.ENGLISH);
-        return sessionLocaleResolver;
-    }
+	
 
     @Bean(name = "commonsMultipartResolver")
     public MultipartResolver multipartResolver() {

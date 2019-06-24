@@ -32,7 +32,7 @@
                             <span th:if="${topic.isChanged}"
                                   th:text="#{topic.reply.changed(${topic.dateOfChange})}">changed on</span>
                         </div>
-                        <div th:utext="${#strings.replace(#strings.escapeXml(topic.text),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"></div>
+                        <div th:utext="${topic.text}"></div>
                     </td>
                 </tr>
                 </tbody>

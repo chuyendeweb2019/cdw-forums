@@ -41,7 +41,7 @@ public class AuthController {
 
     @GetMapping("/registration")
     public String registration(Model model) {
-        model.addAttribute("title", "Registration");
+        model.addAttribute("title", "Đăng kí");
         model.addAttribute("userRegistrationForm", new UserRegistrationForm());
         return "auth/registration";
     }
@@ -56,26 +56,7 @@ public class AuthController {
     public @ResponseBody boolean isEmail(@RequestParam String email) {
         
         return  this.userService.loadUserByEmail(email);    }
-//   
-//    @PostMapping("/registration")
-//    public String registration(
-//            @Valid UserRegistrationForm userRegistrationForm,
-//            BindingResult bindingResult) {
-//
-//        if (bindingResult.hasErrors()) {
-//            return "auth/registration";
-//        }
-//
-//        User user = new User();
-//        user.setUsername(userRegistrationForm.getUsername());
-//        user.setEmail(userRegistrationForm.getEmail());
-//        user.setPassword(userRegistrationForm.getPassword());
-//        user.setDateOfRegistration(new Date());
-//
-//        userService.signupUser(user);
-//
-//        return "redirect:/";
-//    }
+
     @PostMapping("/ajax-registration")
     public @ResponseBody boolean ajaxRegistration(
             @RequestBody UserRegistrationForm userRegistrationForm) {
@@ -97,7 +78,7 @@ public class AuthController {
     @GetMapping("/login")
     public String login(Model model, String error) {
 
-        model.addAttribute("title", "Sign In");
+        model.addAttribute("title", "Đăng nhập");
 
         if (error != null)
             model.addAttribute("error", "Tài khoản hoặc mật khẩu không trùng.");

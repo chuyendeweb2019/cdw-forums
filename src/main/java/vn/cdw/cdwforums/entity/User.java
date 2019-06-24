@@ -64,8 +64,20 @@ public class User implements UserDetails {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Photo photo;
+    
+    
 
-    public boolean getPhotoExist() {
+    public User(Long id, @NotEmpty @Size(min = 3, max = 20) String username, @NotEmpty @Email String email,
+			@NotEmpty String password, Date dateOfRegistration) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.dateOfRegistration = dateOfRegistration;
+	}
+
+	public boolean getPhotoExist() {
         return Objects.nonNull(photo);
     }
 

@@ -88,7 +88,7 @@ public class TopicController {
             Topic editTopic = topicRepository.findById(topic.getId()).orElse(new Topic());
 
             if (!(userService.isCurrentUserId(editTopic.getUser().getId()) || userService.hasRole("ROLE_MODERATOR"))) {
-                throw new AccessDeniedException("This user can't edit this topic");
+                throw new AccessDeniedException("Bạn không thể xóa bài viết");
             }
 
             editTopic.setTitle(topic.getTitle());
@@ -131,7 +131,7 @@ public class TopicController {
         }
 
         if (!(userService.isCurrentUserId(topic.getUser().getId()) || userService.hasRole("ROLE_MODERATOR"))) {
-            throw new AccessDeniedException("This user can't edit this topic");
+            throw new AccessDeniedException("Bạn không thể xóa bài viết");
         }
 
         model.addAttribute("title", "Edit topic");
@@ -143,7 +143,7 @@ public class TopicController {
 
     @GetMapping("/{id}/delete")
     public String confirmRemoval(@PathVariable Long id, ModelMap model) {
-        model.addAttribute("title", "Delete topic");
+        model.addAttribute("title", "Xóa bài viết");
 
         Topic topic = topicRepository.findById(id).orElse(new Topic());
 

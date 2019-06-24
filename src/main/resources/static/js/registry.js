@@ -10,8 +10,8 @@
 		  Object.keys(formData).forEach( r =>
 		  formData[r].keyup(function() { 
 			  if( r === 'password'|| r === 'confirmPassword') {
-				 // mat khau yeu cau tu 4-12 ki tu
-				  if( formData[r].val().length > 3 && formData[r].val().length < 12) {
+				 // mat khau yeu cau tu 4-20 ki tu
+				  if( formData[r].val().length > 3 && formData[r].val().length < 20) {
 					  $('#'+ r + 'Error').html("");
 					   if(formData['password'].val() != "" && formData['confirmPassword'].val() != "" ) {
 						   if(formData['password'].val() === formData['confirmPassword'].val()) {
@@ -25,7 +25,7 @@
 					   }
 					 
 				  } else {
-					 // console.log(" lon hon 8 ki tu ")
+					 // console.log(" lon hon 20 ki tu ")
 					  $('#'+ r + 'Error').html("Mật khẩu không hợp lệ!")
 				  }
 				 

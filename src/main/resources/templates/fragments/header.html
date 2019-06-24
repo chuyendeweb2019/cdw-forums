@@ -20,11 +20,14 @@
 			<a sec:authorize="isAuthenticated()" th:href="@{/search}"
 				th:text="#{header.menu.search}" class="p-2 text-dark" href="#">search</a>
 		</nav>
+		<button sec:authorize="isAuthenticated()" class="btn btn-outline-info">Hộp thoại chat</button>
 
 		<div sec:authorize="isAuthenticated()" th:remove="tag">
 			<span th:utext="#{header.youAreLoggedAs(${#authentication.name})}"
 				class="mx-1">You are logged as:</span> <a th:href="@{/profile}"
 				th:text="#{header.profile}" class="mx-1 btn btn-outline-info">Profile</a>
+				
+				 
 			<form th:action="@{/logout}" method="post">
 				<button type="submit" th:text="#{header.logout}"
 					class="btn btn-outline-secondary">Logout</button>

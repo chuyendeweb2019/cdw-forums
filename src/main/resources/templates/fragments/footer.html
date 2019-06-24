@@ -8,14 +8,15 @@
 	<footer th:fragment="footer">
 	
 	
-	
-
 		<!-- START  -->
-		 <div id="chat-container">
+		                
+		 <div id="chat-container" >
          <div class="chat-header">
             <div class="user-container">
                <span id="username" th:utext="${username}"></span>
                <a th:href="@{/logout}">Đăng xuất</a>
+               
+              <button class="btn1">Đóng</button>
             </div>
          </div>
           <form id="messageForm" name="messageForm">
