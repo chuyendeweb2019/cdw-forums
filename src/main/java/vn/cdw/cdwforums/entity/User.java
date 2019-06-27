@@ -26,6 +26,8 @@ import javax.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import vn.cdw.cdwforums.util.ForumConstants;
 
 @Entity
@@ -56,12 +58,15 @@ public class User implements UserDetails {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfRegistration;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Reply> replies;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Topic> topics;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Photo photo;
     

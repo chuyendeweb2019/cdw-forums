@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Photo {
 	
@@ -15,10 +17,12 @@ public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    
+    @JsonIgnore
     @Lob
     private byte[] photo;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "USER_ID")
     private User user;

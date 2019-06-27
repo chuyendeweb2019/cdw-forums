@@ -17,6 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import vn.cdw.cdwforums.util.ForumConstants;
 
 @Entity
@@ -36,19 +38,16 @@ public class Section {
 
 
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
-    
-    
+    @JsonIgnore
     private Set<Topic> topics;
 
     @ManyToOne
-    @JoinColumn(name = "PARENT_ID")
-    
-    
+    @JoinColumn(name = "PARENT_ID")    
+    @JsonIgnore
     private Section parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    
-    
+    @JsonIgnore
     private Set<Section> subsections = new HashSet<>();
 
     public boolean getIsParent() {

@@ -18,6 +18,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import vn.cdw.cdwforums.util.ForumConstants;
 
 @Entity
@@ -38,18 +40,22 @@ public class Topic {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfChange;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "CHANGED_USER_ID")
     private User changedUser;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "SECTION_ID")
     private Section section;
-
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
     private Set<Reply> replies;
 

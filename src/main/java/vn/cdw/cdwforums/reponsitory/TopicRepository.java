@@ -17,7 +17,8 @@ public interface TopicRepository extends PagingAndSortingRepository<Topic, Long>
 	Page<Topic> findBySection(Section section, Pageable pageable);
 
     Page<Topic> findByTitleContainingOrTextContaining(String searchWordInTitle, String searchWordInText, Pageable pageable);
-    
+    List<Topic> findByTitleContainingOrTextContaining(String searchWordInTitle, String searchWordInText);
+
     @Query("SELECT t,r FROM Topic t,Reply r GROUP BY t.title ORDER BY r.dateOfPublication DESC")
     List<Topic> getNewReply(Pageable pageable);
 
