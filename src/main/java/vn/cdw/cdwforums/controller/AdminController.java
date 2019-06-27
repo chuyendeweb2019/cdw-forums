@@ -1,7 +1,6 @@
 package vn.cdw.cdwforums.controller;
 
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -11,10 +10,8 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +19,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import vn.cdw.cdwforums.entity.Role;
 import vn.cdw.cdwforums.entity.Section;
 import vn.cdw.cdwforums.entity.User;
 import vn.cdw.cdwforums.reponsitory.RoleRepository;
 import vn.cdw.cdwforums.reponsitory.SectionRepository;
-import vn.cdw.cdwforums.reponsitory.UsReposity;
 import vn.cdw.cdwforums.reponsitory.UserRepository;
 import vn.cdw.cdwforums.service.UserService;
 import vn.cdw.cdwforums.util.ResourceNotFoundException;
@@ -38,14 +34,12 @@ import vn.cdw.cdwforums.util.ResourceNotFoundException;
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
-	@Autowired
-	UserService uService;
-	@Autowired
-	UsReposity usRe;
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private SectionRepository sectionRepository;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public AdminController(UserRepository userRepository, RoleRepository roleRepository, SectionRepository sectionRepository) {
@@ -53,21 +47,24 @@ public class AdminController {
         this.roleRepository = roleRepository;
         this.sectionRepository = sectionRepository;
     }
-
+ // Hang
     @GetMapping("/users")
-    public String users(ModelMap model,@RequestParam(name = "p", defaultValue = "1") int page) {
+    public String users(ModelMap model) {
         model.addAttribute("title", "Thành viên");
-        Page<User> listUs = uService.getList(page - 1);
-		int totalPage = listUs.getTotalPages();
-		int begin = Math.max(1, (page) - totalPage);
-		model.addAttribute("listUs", listUs);
-		model.addAttribute("totalPage", totalPage);
-		model.addAttribute("currentIndex", listUs.getNumber() + 1);
-		model.addAttribute("beginIndex", begin);
-		model.addAttribute("endIndex", Math.min(begin + 5, totalPage));
-		model.addAttribute("users", usRe.findAll());
+
+
         return "admin/users/list";
     }
+  @PostMapping("/users1")
+  @ResponseBody
+    public  List<User> userPage(ModelMap model) {
+
+    	model.addAttribute("title","Users");
+    		System.out.println("bikhung");
+
+    	return userService.findAll();
+    }
+ 
 
     
     @GetMapping("/users/{id}/edit")

@@ -18,9 +18,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import vn.cdw.cdwforums.util.ForumConstants;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,19 +38,19 @@ public class Reply {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfChange;
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "CHANGED_USER_ID")
     private User changedUser;
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "TOPIC_ID")
     private Topic topic;
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "REPLY_ID")
     private Reply replyTo;

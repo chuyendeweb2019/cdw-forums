@@ -1,14 +1,13 @@
 package vn.cdw.cdwforums.service;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,14 +19,12 @@ import org.springframework.stereotype.Service;
 import vn.cdw.cdwforums.entity.Role;
 import vn.cdw.cdwforums.entity.User;
 import vn.cdw.cdwforums.reponsitory.RoleRepository;
-import vn.cdw.cdwforums.reponsitory.UsReposity;
 import vn.cdw.cdwforums.reponsitory.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
 	
-	@Autowired
-	UsReposity uRepository;
+	
 
     private static final long ID_ROLE_FOR_NEW_USER = 1L;
 
@@ -121,9 +118,12 @@ public class UserService implements UserDetailsService {
         }
         return hasRole;
     }
-    public Page<User> getList(int page) {
-		return uRepository.findAll(PageRequest.of(page, 5, Sort.by(Sort.Direction.ASC, "id")));
-	}
-    
+    public List<User> findAll() {
+    	List<User> list = new ArrayList<User>();
+    	    for (User item : userRepository.findAll()) {
+    	        list.add(item);
+    	    }
+    	return list;
+    }
 
 }

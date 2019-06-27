@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:include="layouts/default :: page">
+
+
 <body>
 	<div th:fragment="content">
 		<div class="page-header">
 			<h1 th:text="${title}">Users</h1>
 		</div>
-		<table class="table table-striped box-shadow">
+		<table class="table table-striped box-shadow" id="list-user">
 			<thead>
 				<tr>
 					<th th:text="#{admin.th.id}" scope="col">th</th>
@@ -19,44 +21,77 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="user : ${users}">
-					<td><span th:text="${user.id}">id</span></td>
-					<td><span th:text="${user.username}">username</span></td>
-					<td><span th:text="${user.email}">email</span></td>
-					<td><span th:text="${user.dateOfRegistration}">dateOfRegistration</span></td>
-					<td><span th:text="${user.countPosts}">posts</span></td>
-					<td><span th:text="${user.authorities}">posts</span></td>
-					<td><a th:href="@{/admin/users/{id}/edit(id=${user.id})}"
-						th:text="#{admin.tr.edit}" class="btn btn-outline-primary btn-sm">tr</a></td>
-				</tr>
+				
 			</tbody>
 		</table>
-		
-		<div class="row">
-		<ul class="pagination">
-			<li
-				th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
-				<a class="page-link"
-				th:href="@{/users?p={i}(i=${currentIndex})}">First</a>
-			</li>
-			<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
-				th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
-				<a class="page-link" th:href="@{/stockAdmin?p={i}(i=${item})}">
-					<span th:text='${item}'>1</span>
-			</a>
-			</li>
 
-			<li
-				th:class="${currentIndex == totalPage}? 'page-item disabled':'page-item'">
-				<a class="page-link" th:href="@{/users?p={i}(i=${totalPage})}">Last</a>
-			</li>
-		</ul>
+		<div id="pager" class="row">
+			<ul id="pagination" class="pagination-sm"></ul>
+		</div>
+		<script type="text/javascript">
+ $(document).ready(function() {
+var totalRecords = 0,
+ records = [],
+ arr=[],
+ recPerPage = 5,
+ page = 1,
+ totalPages = 0;
+ 			$.ajax({
+ 				type : "POST",
+ 				url : "/admin/users1",
+ 			dataType: "json", 
+ 			success: function (data){
+ 				 arr= data;
+ 				 
+ 				records = arr;
+ 			 
+                totalRecords = records.length;
+                totalPages = Math.ceil(totalRecords / recPerPage);
+                
+                apply_pagination();
+
+ 			}})
+                function apply_pagination() {
+                	
+              	  $('#pagination').twbsPagination({
+                        totalPages: totalPages,
+                        visiblePages: 6,
+                        onPageClick: function (event, page) {
+                              displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+                              endRec = (displayRecordsIndex) + recPerPage;
+                             
+                              arr = records.slice(displayRecordsIndex, endRec);
+                              generate_table();
+                  }
+              	})
+                  
+              }               
+              
+ 	function generate_table() {
+ 		$('#list-user tbody').remove();
+                var tbody="<tbody></tbody>";
+ 		 		$('#list-user').append(tbody);
+ 		 		console.log(arr[0]);
+ 		 		for(var j=0,l1=arr.length;j<l1;j++){
+ 					
+ 				var authorities=arr[j].authorities;var listAu="";
+ 				for(var i=0,l=authorities.length;i<l;i++){
+ 					listAu=listAu+authorities[i].name+" , ";
+ 				}
+ 				var row="<tr><td >"+arr[j].id+"</td>"
+ 				+"<td >"+arr[j].username+"</td>"
+ 				+"<td >"+arr[j].email+"</td>"
+ 				+"<td >"+arr[j].dateOfRegistration+"</td>"+
+ 				"<td >"+arr[j].countPosts+"</td>"+
+ 				"<td >"+listAu+"</td><td><a href='http://localhost:8080/admin/users/"+arr[j].id+"/edit'"+
+				" class='btn btn-outline-primary btn-sm' >Sửa</a></td></tr>";
+ 				$('#list-user tbody').append(row); 
+ 			
+          }	
+ 			}
+ 			});
+ </script>
+
 	</div>
-
-	</div>
-	
-
-
-	
 </body>
 </html>

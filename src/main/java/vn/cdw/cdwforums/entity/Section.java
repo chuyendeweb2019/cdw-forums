@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import vn.cdw.cdwforums.util.ForumConstants;
@@ -36,7 +37,7 @@ public class Section {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfPublication;
 
-
+    @JsonBackReference
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Topic> topics;
@@ -45,7 +46,7 @@ public class Section {
     @JoinColumn(name = "PARENT_ID")    
     @JsonIgnore
     private Section parent;
-
+    @JsonBackReference
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Section> subsections = new HashSet<>();
