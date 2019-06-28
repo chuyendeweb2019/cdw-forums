@@ -21,7 +21,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				
+
 			</tbody>
 		</table>
 
@@ -29,68 +29,94 @@
 			<ul id="pagination" class="pagination-sm"></ul>
 		</div>
 		<script type="text/javascript">
- $(document).ready(function() {
-var totalRecords = 0,
- records = [],
- arr=[],
- recPerPage = 5,
- page = 1,
- totalPages = 0;
- 			$.ajax({
- 				type : "POST",
- 				url : "/admin/users1",
- 			dataType: "json", 
- 			success: function (data){
- 				 arr= data;
- 				 
- 				records = arr;
- 			 
-                totalRecords = records.length;
-                totalPages = Math.ceil(totalRecords / recPerPage);
-                
-                apply_pagination();
+			$(document)
+					.ready(
+							function() {
+								var totalRecords = 0, records = [], arr = [], recPerPage = 5, page = 1, totalPages = 0;
+								$.ajax({
+									type : "POST",
+									url : "/admin/users1",
+									dataType : "json",
+									success : function(data) {
+										arr = data;
+										console.log(data);
+										records = arr;
 
- 			}})
-                function apply_pagination() {
-                	
-              	  $('#pagination').twbsPagination({
-                        totalPages: totalPages,
-                        visiblePages: 6,
-                        onPageClick: function (event, page) {
-                              displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
-                              endRec = (displayRecordsIndex) + recPerPage;
-                             
-                              arr = records.slice(displayRecordsIndex, endRec);
-                              generate_table();
-                  }
-              	})
-                  
-              }               
-              
- 	function generate_table() {
- 		$('#list-user tbody').remove();
-                var tbody="<tbody></tbody>";
- 		 		$('#list-user').append(tbody);
- 		 		console.log(arr[0]);
- 		 		for(var j=0,l1=arr.length;j<l1;j++){
- 					
- 				var authorities=arr[j].authorities;var listAu="";
- 				for(var i=0,l=authorities.length;i<l;i++){
- 					listAu=listAu+authorities[i].name+" , ";
- 				}
- 				var row="<tr><td >"+arr[j].id+"</td>"
- 				+"<td >"+arr[j].username+"</td>"
- 				+"<td >"+arr[j].email+"</td>"
- 				+"<td >"+arr[j].dateOfRegistration+"</td>"+
- 				"<td >"+arr[j].countPosts+"</td>"+
- 				"<td >"+listAu+"</td><td><a href='http://localhost:8080/admin/users/"+arr[j].id+"/edit'"+
+										totalRecords = records.length;
+										totalPages = Math.ceil(totalRecords
+												/ recPerPage);
+
+										apply_pagination();
+
+									}
+								})
+								function apply_pagination() {
+
+									$('#pagination')
+											.twbsPagination(
+													{
+														totalPages : totalPages,
+														visiblePages : 6,
+														onPageClick : function(
+																event, page) {
+															displayRecordsIndex = Math
+																	.max(
+																			page - 1,
+																			0)
+																	* recPerPage;
+															endRec = (displayRecordsIndex)
+																	+ recPerPage;
+
+															arr = records
+																	.slice(
+																			displayRecordsIndex,
+																			endRec);
+															generate_table();
+														}
+													})
+
+								}
+
+								function generate_table() {
+									$('#list-user tbody').remove();
+									var tbody = "<tbody></tbody>";
+									$('#list-user').append(tbody);
+									console.log(arr[0]);
+									
+									for (var j = 0, l1 = arr.length; j < l1; j++) {
+
+										var authorities = arr[j].authorities;
+										var listAu = "";
+										for (var i = 0, l = authorities.length; i < l; i++) {
+											listAu = listAu
+													+ authorities[i].name
+													+ " , ";
+										}
+										var row = "<tr><td >"
+												+ arr[j].id
+												+ "</td>"
+												+ "<td >"
+												+ arr[j].username
+												+ "</td>"
+												+ "<td >"
+												+ arr[j].email
+												+ "</td>"
+												+ "<td >"
+												+ arr[j].dateOfRegistration
+												+ "</td>"
+												+ "<td >"
+												+ arr[j].countPosts
+												+ "</td>"
+												+ "<td >"
+												+ listAu
+												+ "</td><td><a href='http://localhost:8080/admin/users/"+arr[j].id+"/edit'"+
 				" class='btn btn-outline-primary btn-sm' >Sửa</a></td></tr>";
- 				$('#list-user tbody').append(row); 
- 			
-          }	
- 			}
- 			});
- </script>
+										$('#list-user tbody').append(row);
+
+									}
+								}
+							});
+		</script>
 
 	</div>
 </body>

@@ -10,9 +10,7 @@
 		<nav class="navbar navbar-down">
 		<ul class="nav navbar-nav flex-item hidden-xs"></ul>
 			<a th:href="@{/}" th:text="#{header.menu.home}" class="p-2 text-dark"
-				href="#">home</a> <a th:href="@{#}"
-				th:target="_blank" th:text="#{header.menu.report}"
-				class="p-2 text-dark" href="#">report</a> <a
+				href="#">home</a> <a
 				sec:authorize="${hasRole('ADMIN')}" th:href="@{/admin/users}"
 				th:text="#{header.menu.users}" class="p-2 text-dark" href="#">users</a>
 			<a sec:authorize="${hasRole('ADMIN')}" th:href="@{/admin/sections}"
